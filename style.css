@@ -1,7 +1,22 @@
 .header {
    height: 100px;
-   background-color: gray;
-   color: white;
+   background-color:orange;
+   color: light;
    text-align: center;
-   padding: 25px;
+   padding: 100px;
+}
+
+.users-wrapper {
+   height: 400px;
+   width: 100%;
+   background-color:rgba(225, 200, 100, 10.5);
+
+}
+
+.user {
+   width: 200px;
+   height: 200px;
+   margin: 100px;
+   background-color: blue;
+   float: left;
 }
