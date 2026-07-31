@@ -224,242 +224,70 @@ function useHashRoute(): [Section, (s: Section) => void] {
 
 // ─── Content Data ────────────────────────────────────────────────────────────
 
-const PARTICLE_DEMO = `<!DOCTYPE html>
-<html style="margin:0;background:#080808;overflow:hidden;">
-<canvas id="c" style="display:block;width:100vw;height:100vh;"></canvas>
-<script>
-const c = document.getElementById('c');
-const ctx = c.getContext('2d');
-let W, H, particles = [], mouse = {x: -9999, y: -9999};
-const N = 1800;
-function resize() { W = c.width = c.offsetWidth; H = c.height = c.offsetHeight; }
-function init() {
-  particles = Array.from({length: N}, () => ({
-    x: Math.random() * W, y: Math.random() * H,
-    ox: 0, oy: 0,
-    vx: (Math.random() - 0.5) * 0.4,
-    vy: (Math.random() - 0.5) * 0.4,
-    size: Math.random() * 1.8 + 0.3,
-    alpha: Math.random() * 0.5 + 0.15
-  }));
-}
-function draw() {
-  ctx.fillStyle = 'rgba(8,8,8,0.18)';
-  ctx.fillRect(0, 0, W, H);
-  particles.forEach(p => {
-    const dx = mouse.x - p.x, dy = mouse.y - p.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    const R = 120;
-    if (dist < R) {
-      const force = (1 - dist/R) * 1.2;
-      p.vx -= (dx/dist) * force * 0.6;
-      p.vy -= (dy/dist) * force * 0.6;
-    }
-    p.vx *= 0.96; p.vy *= 0.96;
-    p.x += p.vx; p.y += p.vy;
-    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(200,245,0,' + p.alpha + ')';
-    ctx.fill();
-  });
-  requestAnimationFrame(draw);
-}
-window.addEventListener('resize', () => { resize(); init(); });
-document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-resize(); init(); draw();
-<\/script>
-</html>`;
-
-const CLOCK_DEMO = `<!DOCTYPE html>
-<html style="margin:0;background:#080808;display:flex;align-items:center;justify-content:center;height:100vh;">
-<style>
-  body { font-family: 'JetBrains Mono', 'Courier New', monospace; }
-  .wrap { display:flex;flex-direction:column;align-items:center;gap:40px; }
-  .grid { display:flex;gap:20px;align-items:flex-end; }
-  .group { display:flex;gap:8px; }
-  .col { display:flex;flex-direction:column-reverse;gap:7px;align-items:center; }
-  .lbl { color:#333;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-top:12px; }
-  .bit { width:24px;height:24px;border:1px solid #1a1a1a;transition:background 0.12s,box-shadow 0.12s; }
-  .bit.on { background:#c8f500;box-shadow:0 0 10px rgba(200,245,0,0.45); }
-  .bit.off { background:#111; }
-  .sep { color:#252525;font-size:28px;padding-bottom:36px;letter-spacing:-2px; }
-  #ts { color:#2a2a2a;font-size:11px;letter-spacing:4px; }
-  #digital { color:#c8f500;font-size:32px;letter-spacing:8px; }
-</style>
-<div class="wrap">
-  <div id="digital">00:00:00</div>
-  <div class="grid" id="clock"></div>
-  <div id="ts">binary · real-time</div>
-</div>
-<script>
-function toBits(n, count) {
-  return Array.from({length:count}, (_,i) => !!(n & (1 << (count-1-i))));
-}
-function render() {
-  const now = new Date();
-  const H = now.getHours(), M = now.getMinutes(), S = now.getSeconds();
-  const groups = [
-    {bits:toBits(Math.floor(H/10),2),lbl:'H'},
-    {bits:toBits(H%10,4),lbl:'H'},
-    {bits:toBits(Math.floor(M/10),3),lbl:'M'},
-    {bits:toBits(M%10,4),lbl:'M'},
-    {bits:toBits(Math.floor(S/10),3),lbl:'S'},
-    {bits:toBits(S%10,4),lbl:'S'}
-  ];
-  const clock = document.getElementById('clock');
-  clock.innerHTML = '';
-  [[0,1],[2,3],[4,5]].forEach(([a,b], gi) => {
-    const grp = document.createElement('div');
-    grp.className = 'group';
-    [groups[a], groups[b]].forEach(g => {
-      const col = document.createElement('div');
-      col.className = 'col';
-      g.bits.forEach(on => {
-        const bit = document.createElement('div');
-        bit.className = 'bit ' + (on ? 'on' : 'off');
-        col.appendChild(bit);
-      });
-      const lbl = document.createElement('div');
-      lbl.className = 'lbl'; lbl.textContent = g.lbl;
-      col.appendChild(lbl);
-      grp.appendChild(col);
-    });
-    clock.appendChild(grp);
-    if (gi < 2) {
-      const sep = document.createElement('div');
-      sep.className = 'sep'; sep.textContent = ':';
-      clock.appendChild(sep);
-    }
-  });
-  document.getElementById('digital').textContent =
-    String(H).padStart(2,'0') + ':' + String(M).padStart(2,'0') + ':' + String(S).padStart(2,'0');
-}
-render(); setInterval(render, 1000);
-<\/script>
-</html>`;
-
-const RAYCAST_DEMO = `<!DOCTYPE html>
-<html style="margin:0;overflow:hidden;background:#080808;">
-<canvas id="c"></canvas>
-<div style="position:fixed;bottom:16px;left:0;right:0;text-align:center;color:#333;font-family:monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;">WASD / Arrows · Move &nbsp;|&nbsp; Q/E · Strafe</div>
-<script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-const W = canvas.width, H = canvas.height;
-
-const MAP = [
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
-  [1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
-  [1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
-  [1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,1,1,0,0,0,0,0,0,0,0,1,1,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
-  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-];
-
-let px=2.5, py=2.5, pa=0.3;
-const FOV = Math.PI / 3;
-const keys = {};
-document.addEventListener('keydown', e => { keys[e.key] = true; e.preventDefault(); });
-document.addEventListener('keyup', e => { keys[e.key] = false; });
-
-function castRay(angle) {
-  const cos = Math.cos(angle), sin = Math.sin(angle);
-  for (let t = 0; t < 16; t += 0.02) {
-    const rx = px + cos * t, ry = py + sin * t;
-    const mx = Math.floor(rx), my = Math.floor(ry);
-    if (MAP[my] && MAP[my][mx]) {
-      const side = Math.abs(Math.round(ry) - ry) < Math.abs(Math.round(rx) - rx);
-      return { dist: t, side };
-    }
-  }
-  return { dist: 16, side: false };
-}
-
-function frame() {
-  const spd = 0.06, rot = 0.045;
-  if (keys['a'] || keys['A'] || keys['ArrowLeft']) pa -= rot;
-  if (keys['d'] || keys['D'] || keys['ArrowRight']) pa += rot;
-  const nx_f = px + Math.cos(pa) * spd, ny_f = py + Math.sin(pa) * spd;
-  const nx_b = px - Math.cos(pa) * spd, ny_b = py - Math.sin(pa) * spd;
-  const ns_l = Math.cos(pa - Math.PI/2), ns_lv = Math.sin(pa - Math.PI/2);
-  const ns_r = Math.cos(pa + Math.PI/2), ns_rv = Math.sin(pa + Math.PI/2);
-  if (keys['w'] || keys['W'] || keys['ArrowUp']) {
-    if (!MAP[Math.floor(py)][Math.floor(nx_f)]) px = nx_f;
-    if (!MAP[Math.floor(ny_f)][Math.floor(px)]) py = ny_f;
-  }
-  if (keys['s'] || keys['S'] || keys['ArrowDown']) {
-    if (!MAP[Math.floor(py)][Math.floor(nx_b)]) px = nx_b;
-    if (!MAP[Math.floor(ny_b)][Math.floor(px)]) py = ny_b;
-  }
-  if (keys['q'] || keys['Q']) {
-    const lx = px + ns_l * spd, ly = py + ns_lv * spd;
-    if (!MAP[Math.floor(py)][Math.floor(lx)]) px = lx;
-    if (!MAP[Math.floor(ly)][Math.floor(px)]) py = ly;
-  }
-  if (keys['e'] || keys['E']) {
-    const rx = px + ns_r * spd, ry = py + ns_rv * spd;
-    if (!MAP[Math.floor(py)][Math.floor(rx)]) px = rx;
-    if (!MAP[Math.floor(ry)][Math.floor(px)]) py = ry;
-  }
-
-  ctx.fillStyle = '#0a0a0a';
-  ctx.fillRect(0, 0, W, H / 2);
-  ctx.fillStyle = '#050505';
-  ctx.fillRect(0, H / 2, W, H / 2);
-
-  const COLS = W;
-  for (let col = 0; col < COLS; col++) {
-    const angle = pa - FOV / 2 + (col / COLS) * FOV;
-    const { dist, side } = castRay(angle);
-    const corrDist = dist * Math.cos(angle - pa);
-    const wallH = Math.min(H, H / corrDist);
-    const y = (H - wallH) / 2;
-    const bright = Math.max(0.05, 1 - dist / 12);
-    const g = Math.floor(245 * bright * (side ? 0.55 : 1));
-    const r = Math.floor(200 * bright * (side ? 0.55 : 1));
-    ctx.fillStyle = 'rgb(' + r + ',' + g + ',0)';
-    ctx.fillRect(col, y, 1, wallH);
-  }
-  requestAnimationFrame(frame);
-}
-frame();
-<\/script>
-</html>`;
-
-const CODE_DEMOS = [
+const CODE_REPOS = [
   {
-    id: "particles",
-    title: "Particle Field",
-    description: "Canvas particle system — 1800 particles with real-time mouse-repulsion physics. No libraries. Move cursor over the iframe to interact.",
-    tags: ["Canvas API", "Physics Sim", "Vanilla JS"],
-    srcDoc: PARTICLE_DEMO,
+    id: "frame-link",
+    title: "frame-link",
+    description:
+      "A typed, serializable protocol for iframe ↔ host communication over postMessage. Handles request/response, events, and origin validation so embedded apps and their hosts can talk safely without hand-rolling message plumbing.",
+    tags: ["TypeScript", "postMessage", "iframe", "Protocol"],
+    url: "https://github.com/dcassil/frame-link",
   },
   {
-    id: "clock",
-    title: "Binary Clock",
-    description: "Real-time binary clock. Hours, minutes, seconds displayed in positional binary columns. Synced to your system clock.",
-    tags: ["SVG / DOM", "Real-time", "CSS Transitions"],
-    srcDoc: CLOCK_DEMO,
+    id: "frame-link-react",
+    title: "frame-link-react",
+    description:
+      "React bindings for frame-link — hooks and providers that expose the typed iframe/host channel to components, keeping message wiring declarative on both sides of the frame.",
+    tags: ["TypeScript", "React", "Hooks", "iframe"],
+    url: "https://github.com/dcassil/frame-link-react",
   },
   {
-    id: "raycast",
-    title: "Raycaster Engine",
-    description: "Wolfenstein-style 3D raycasting engine in pure Canvas. DDA ray marching, fisheye correction, directional shading. Use WASD or arrow keys.",
-    tags: ["Canvas API", "3D Math", "Game Engine"],
-    srcDoc: RAYCAST_DEMO,
+    id: "stardust-iframe-adapter",
+    title: "stardust-iframe-adapter",
+    description:
+      "A typed, serializable visual-editing protocol plus iframe/host React adapters (built on frame-link). Maps editable elements inside an embedded site to host overlay controls, shipped with a runnable admin + site demo.",
+    tags: ["TypeScript", "Visual Editing", "React", "CMS"],
+    url: "https://github.com/dcassil/stardust-iframe-adapter",
+  },
+  {
+    id: "stardust-dashboard",
+    title: "stardust-dashboard",
+    description:
+      "An extensible host-dashboard boilerplate for in-iframe visual editors built on the stardust iframe adapter. Bring your own content store and block types; the dashboard supplies the editing shell.",
+    tags: ["TypeScript", "Dashboard", "Boilerplate", "CMS"],
+    url: "https://github.com/dcassil/stardust-dashboard",
+  },
+  {
+    id: "versioned-content-engine",
+    title: "versioned-content-engine",
+    description:
+      "A headless, dependency-free library for draft/live content versioning. Append-only records with deterministic materialization and corrected tombstone semantics — the versioning core, decoupled from any storage or UI.",
+    tags: ["TypeScript", "Versioning", "Headless", "Data Model"],
+    url: "https://github.com/dcassil/versioned-content-engine",
+  },
+  {
+    id: "transactor",
+    title: "transactor",
+    description:
+      "Client-side transactional change management: sequence edits, undo/redo, edge deduplication, superimpose changes onto a dataset, and flush as batched saves. Published to npm as sequence-transactor.",
+    tags: ["TypeScript", "Undo/Redo", "State", "npm"],
+    url: "https://github.com/dcassil/transactor",
+  },
+  {
+    id: "code-audit",
+    title: "code-audit",
+    description:
+      "Tooling for auditing a codebase — surfacing quality and structural signals to keep both human- and agent-driven changes honest over time.",
+    tags: ["TypeScript", "Static Analysis", "Tooling"],
+    url: "https://github.com/dcassil/code-audit",
+  },
+  {
+    id: "cadre-architecture-docs",
+    title: "cadre-architecture-docs",
+    description:
+      "Public reference for the architecture patterns used by Cadre — the layering, boundaries, and conventions that keep services consistent and maintainable.",
+    tags: ["Architecture", "Patterns", "Docs"],
+    url: "https://github.com/dcassil/cadre-architecture-docs",
   },
 ];
 
@@ -829,39 +657,12 @@ function NavItem({
   );
 }
 
-function SandboxFrame({ srcDoc, title }: { srcDoc: string; title: string }) {
-  const [active, setActive] = useState(false);
-  return (
-    <div className="relative w-full aspect-video bg-muted border border-border overflow-hidden group">
-      {!active && (
-        <button
-          onClick={() => setActive(true)}
-          className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-muted hover:bg-secondary transition-colors duration-200 z-10"
-        >
-          <Terminal size={24} className="text-muted-foreground" />
-          <span className="font-mono text-xs text-muted-foreground tracking-widest uppercase">
-            Click to run {title}
-          </span>
-        </button>
-      )}
-      {active && (
-        <iframe
-          srcDoc={srcDoc}
-          title={title}
-          sandbox="allow-scripts"
-          className="w-full h-full border-0"
-        />
-      )}
-    </div>
-  );
-}
-
 // ─── Pages ───────────────────────────────────────────────────────────────────
 
 function HomePage({ navigate }: { navigate: (s: Section) => void }) {
   const sections: { id: Section; label: string; desc: string; icon: React.ReactNode; accent: string }[] = [
     { id: "product", label: "Product", desc: "Case studies in platform, tooling, and collaboration.", icon: <Box size={16} />, accent: "#c8f500" },
-    { id: "code", label: "Code", desc: "Interactive demos — canvas, 3D engines, real-time systems.", icon: <Terminal size={16} />, accent: "#00d4ff" },
+    { id: "code", label: "Code", desc: "Open-source libraries and tools — TypeScript, protocols, developer systems.", icon: <Terminal size={16} />, accent: "#00d4ff" },
     { id: "design", label: "Design", desc: "Visual systems, brand identity, motion, and data vis.", icon: <Layers size={16} />, accent: "#ff6b35" },
     { id: "architecture", label: "Architecture", desc: "Technical documents, ADRs, and platform blueprints.", icon: <Cpu size={16} />, accent: "#a855f7" },
   ];
@@ -981,28 +782,33 @@ function CodePage() {
   return (
     <div className="px-8 py-12">
       <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Interactive Demos</p>
+        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Open Source</p>
         <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Code</h2>
         <p className="text-sm text-muted-foreground mt-3 max-w-md leading-relaxed">
-          Self-contained demos running in sandboxed iframes. No frameworks. Click to activate each demo.
+          A selection of my public repositories. Each links straight to the source on GitHub.
         </p>
       </header>
 
-      <div className="flex flex-col gap-16">
-        {CODE_DEMOS.map((demo, i) => (
-          <article key={demo.id}>
-            <div className="flex items-center gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
+        {CODE_REPOS.map((repo, i) => (
+          <a
+            key={repo.id}
+            href={repo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col bg-background p-6 transition-colors hover:bg-muted/40"
+          >
+            <div className="flex items-center gap-3 mb-3">
               <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide uppercase">{demo.title}</h3>
+              <Github size={14} className="text-muted-foreground flex-shrink-0" />
+              <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide">{repo.title}</h3>
+              <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
             </div>
-            <SandboxFrame srcDoc={demo.srcDoc} title={demo.title} />
-            <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <p className="text-xs text-muted-foreground leading-relaxed max-w-lg">{demo.description}</p>
-              <div className="flex flex-wrap gap-2 flex-shrink-0">
-                {demo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
-              </div>
+            <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
             </div>
-          </article>
+          </a>
         ))}
       </div>
     </div>
@@ -1179,7 +985,7 @@ function Sidebar({
         <div className="px-4 pb-6 pt-4 border-t border-border">
           <div className="flex gap-3 mb-4">
             <a
-              href="https://github.com"
+              href="https://github.com/dcassil"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors duration-200"
