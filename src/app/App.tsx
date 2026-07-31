@@ -328,9 +328,9 @@ const PRODUCT_WORK = [
       "The live product face of the ShoreGuard software-health system. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
     tags: ["Next.js", "Supabase", "Code Health", "SaaS", "Founder-facing"],
     metrics: [
-      { label: "Health score", value: "92 vs 65" },
-      { label: "Cost delta", value: "2.5×" },
-      { label: "Source retained", value: "None" },
+      { label: "Product form", value: "SaaS platform" },
+      { label: "Audience", value: "Founders and product teams" },
+      { label: "Outcome", value: "Makes software risk visible" },
     ],
     accent: "#00d4ff",
     url: "https://www.casspear.com/",
@@ -344,9 +344,9 @@ const PRODUCT_WORK = [
       "The product and worker substrate behind ShoreGuard. Shore Code and Shore Runner help teams understand the condition of their codebase, track how it changes over time, and identify the areas most likely to slow development or introduce risk. The system connects securely to GitHub, analyzes repositories without retaining customer source code, and turns technical findings into clear health scores, trends, and actionable insights.",
     tags: ["Next.js", "Supabase", "GitHub App", "Workers", "Static Analysis"],
     metrics: [
-      { label: "Product tests", value: "493/493" },
-      { label: "Worker tests", value: "130/130" },
-      { label: "Cycles", value: "0" },
+      { label: "Product form", value: "Analysis platform + worker system" },
+      { label: "Audience", value: "Software teams" },
+      { label: "Outcome", value: "Turns repositories into actionable health signals" },
     ],
     accent: "#00d4ff",
   },
@@ -359,9 +359,9 @@ const PRODUCT_WORK = [
       "A codebase protection system that keeps software healthy as teams and AI agents continue building. It turns architectural standards, code-quality expectations, and project-specific rules into automated guardrails that catch drift, prevent regressions, and improve the codebase with every commit.",
     tags: ["Code Health", "Architecture Guardrails", "AI Development", "CI"],
     metrics: [
-      { label: "System role", value: "Guardrails" },
-      { label: "Feedback loop", value: "Every commit" },
-      { label: "Goal", value: "Less drift" },
+      { label: "Product form", value: "CLI + CI guardrails" },
+      { label: "Audience", value: "Human and AI developers" },
+      { label: "Outcome", value: "Prevents architectural drift" },
     ],
     accent: "#00d4ff",
   },
@@ -374,9 +374,9 @@ const PRODUCT_WORK = [
       "An organization-wide software health platform built to evaluate codebases across multiple teams, products, and repositories. It combines automated analysis, historical trends, and shared engineering standards to help leaders identify systemic risk, compare code health across the organization, and focus improvement efforts where they will have the greatest impact.",
     tags: ["Multi-Tenant SaaS", "Code Health", "Engineering Standards", "Analytics"],
     metrics: [
-      { label: "Scope", value: "Org-wide" },
-      { label: "Signal", value: "Trends" },
-      { label: "Focus", value: "Risk" },
+      { label: "Product form", value: "Enterprise SaaS" },
+      { label: "Scope", value: "Multi-team organizations" },
+      { label: "Outcome", value: "Prioritizes systemic engineering risk" },
     ],
     accent: "#00d4ff",
   },
@@ -389,9 +389,9 @@ const PRODUCT_WORK = [
       "An AI engineering system that brings structure, consistency, and oversight to complex software development. It coordinates specialized agents through defined workflows, quality gates, architectural rules, and auditable decision paths — helping teams move faster without losing control of how software is designed, built, and maintained.",
     tags: ["MCP", "CLI", "Protocol Schemas", "Guardrails", "TypeScript"],
     metrics: [
-      { label: "Katana tests", value: "299/299" },
-      { label: "Dev Genie tests", value: "292" },
-      { label: "Focus", value: "Agent systems" },
+      { label: "Product form", value: "CLI + plugins + agent workflows" },
+      { label: "Audience", value: "AI-assisted engineering teams" },
+      { label: "Outcome", value: "Adds structure and oversight to agent development" },
     ],
     accent: "#ff6b35",
   },
@@ -404,9 +404,9 @@ const PRODUCT_WORK = [
       "A meeting workflow system that turns recorded governance sessions into structured, usable outcomes. It captures and transcribes meetings, uses AI to identify decisions, action items, owners, deadlines, risks, and key discussion themes, then organizes the results into reviewable minutes and a searchable institutional record.",
     tags: ["AI", "Transcription", "Governance", "Workflow Automation"],
     metrics: [
-      { label: "Inputs", value: "Meetings" },
-      { label: "Outputs", value: "Minutes" },
-      { label: "Record", value: "Searchable" },
+      { label: "Product form", value: "AI workflow platform" },
+      { label: "Audience", value: "Governance councils" },
+      { label: "Outcome", value: "Turns meetings into accountable outcomes" },
     ],
     accent: "#22c55e",
   },
@@ -419,9 +419,9 @@ const PRODUCT_WORK = [
       "A live-app editing prototype that let users interact with their actual hosted app inside an iframe instead of a detached simulation. The model used postMessage, parent-side overlays, context menus, drop zones, drag handles, collaboration states, and draft/versioning concepts.",
     tags: ["React", "iframe", "postMessage", "Overlays", "Versioning"],
     metrics: [
-      { label: "Prototype", value: "~3wk" },
-      { label: "Surface", value: "Hosted app" },
-      { label: "Outcome", value: "Roadmap alignment" },
+      { label: "Product form", value: "Visual application builder" },
+      { label: "Audience", value: "No-code application creators" },
+      { label: "Outcome", value: "Unifies editing and the live product" },
     ],
     accent: "#a855f7",
   },
@@ -434,24 +434,24 @@ const PRODUCT_WORK = [
       "A typed iframe communication primitive composed into a visual-editing adapter. Frame Link handles secure host/iframe request-response messaging; Stardust maps editable elements inside an embedded site to host-side overlays, content injection, and draft/live flows.",
     tags: ["TypeScript", "postMessage", "iframe", "Visual Editing"],
     metrics: [
-      { label: "Transport tests", value: "35/35" },
-      { label: "Design arc", value: "Primitive → Product" },
-      { label: "Scope", value: "Adapter + demo" },
+      { label: "Product form", value: "Protocol + visual-editing adapter" },
+      { label: "Audience", value: "Embedded application teams" },
+      { label: "Outcome", value: "Enables safe live-site editing" },
     ],
     accent: "#c8f500",
   },
   {
     id: "ladder-demo",
-    title: "Clinical Ladder Product Slice",
+    title: "Clinical Ladder Workflow",
     period: "2026",
     category: "Domain Modeling · Product Sense",
     description:
       "A focused full-stack workflow for clinical ladder submissions: nurse intent, evidence capture, requirement matching, portfolio review, and reviewer decision. It is a constrained product slice, useful because it turns an ambiguous domain into a coherent end-to-end system.",
     tags: ["Healthcare Workflow", "Supabase", "Forms", "Review Queue"],
     metrics: [
-      { label: "Scope", value: "End-to-end" },
-      { label: "Model", value: "Portfolio review" },
-      { label: "Cycles", value: "0" },
+      { label: "Product form", value: "Healthcare workflow SaaS" },
+      { label: "Audience", value: "Nurses and clinical reviewers" },
+      { label: "Outcome", value: "Clarifies advancement and review decisions" },
     ],
     accent: "#22c55e",
   },
@@ -1020,8 +1020,8 @@ function ProductPage() {
                 <div className="grid grid-cols-3 sm:grid-cols-1 gap-px bg-border">
                   {work.metrics.map((m) => (
                     <div key={m.label} className="bg-card px-4 py-3 min-w-0">
-                      <div className="font-mono text-lg font-bold" style={{ color: work.accent }}>{m.value}</div>
-                      <div className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase mt-0.5">{m.label}</div>
+                      <div className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase">{m.label}</div>
+                      <div className="font-mono text-xs font-semibold leading-snug mt-1.5" style={{ color: work.accent }}>{m.value}</div>
                     </div>
                   ))}
                 </div>
