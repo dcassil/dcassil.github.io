@@ -229,6 +229,13 @@ function useHashRoute(): [Section, (s: Section) => void] {
 
 const CODE_REPOS = [
   {
+    id: "shoreworks-code-strategy",
+    title: "ShoreWorks — code strategy",
+    description:
+      "The engine behind ShoreWorks (casspear.com). It's a private product, so there's no public repo — but the strategy is the point: treat architecture as executable. Layered modules with enforced dependency boundaries, typed contracts between the product tier and a stateless scan runner, dependency-cycle checks in CI, and near-total test coverage (493/493 product, 130/130 runner). Static-analysis toolchains run in an isolated worker that leases scans and never persists customer source.",
+    tags: ["Next.js", "Supabase", "Static Analysis", "Private"],
+  },
+  {
     id: "frame-link",
     title: "frame-link",
     description:
@@ -296,6 +303,22 @@ const CODE_REPOS = [
 
 const PRODUCT_WORK = [
   {
+    id: "shoreworks",
+    title: "ShoreWorks",
+    period: "2026",
+    category: "Developer Tools · SaaS · Live",
+    description:
+      "The live product face of my code-health work. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
+    tags: ["Next.js", "Supabase", "Code Health", "SaaS", "Founder-facing"],
+    metrics: [
+      { label: "Health score", value: "92 vs 65" },
+      { label: "Cost delta", value: "2.5×" },
+      { label: "Source retained", value: "None" },
+    ],
+    accent: "#00d4ff",
+    url: "https://www.casspear.com/",
+  },
+  {
     id: "frame-link-stardust",
     title: "Frame Link → Stardust Iframe Adapter",
     period: "2026",
@@ -316,7 +339,7 @@ const PRODUCT_WORK = [
     period: "2026",
     category: "Developer Tools · SaaS",
     description:
-      "A repository health product paired with a stateless scan worker. Shore Code covers GitHub App integration, scan ingest, dashboards, auth/team scaffolding, and Supabase-backed data. Shore Runner leases scans, runs static-analysis toolchains, aggregates metrics, and posts results back.",
+      "The engineering substrate behind ShoreWorks: a repository-health product paired with a stateless scan worker. Shore Code covers GitHub App integration, scan ingest, dashboards, auth/team scaffolding, and Supabase-backed data. Shore Runner leases scans, runs static-analysis toolchains, aggregates metrics, and posts results back — never persisting customer source.",
     tags: ["Next.js", "Supabase", "GitHub App", "Workers", "Static Analysis"],
     metrics: [
       { label: "Product tests", value: "493/493" },
@@ -497,6 +520,40 @@ Foundational CMS/eCommerce architecture for draft/live states, scheduled release
 **Decision:** Use static analysis, dependency boundaries, complexity limits, typed contracts, and workflow gates as part of the development environment.
 
 **Consequence:** The architecture becomes a working constraint, not a paragraph people must remember.
+
+---
+
+## ShoreWorks — Architecture & Ideology
+
+\`Live at casspear.com\`
+
+ShoreWorks is where the guardrail philosophy becomes a product. The premise: teams now ship software faster than they can understand it — especially with AI writing large portions of the code. Speed without a health signal is how a codebase quietly rots. ShoreWorks makes that signal continuous and legible to people who don't read diffs.
+
+**Product / runner split**
+The system is deliberately two pieces. Shore Code owns everything stateful and user-facing — GitHub App integration, auth, teams, scan ingest, dashboards, and Supabase-backed history. Shore Runner is a stateless worker that leases a scan, runs static-analysis toolchains against a checkout, aggregates metrics, posts results back, and forgets the source. That boundary is a security decision as much as an architectural one: untrusted repositories never touch the product tier, and customer code is never retained or used for training.
+
+**Signals become business language**
+Raw engineering metrics — complexity, coupling, cycles, coverage, churn — mean nothing to a founder. The product's job is translation: it maps those signals onto development cost, delivery speed, bug risk, security exposure, and maintainability, then quantifies them. A healthy codebase might score 92% health against a fragile one's 65%, with a 2.5× cost difference on the same feature. Trend history turns a single score into a direction.
+
+### The agentic guard concept
+
+The idea that ties ShoreWorks to Katana and Dev Genie: **an AI agent should operate inside enforced guards, not inside good intentions.**
+
+A prompt that says "keep the architecture clean" is advisory — an agent can ignore or slowly dilute it, and usually does. A guard is executable: dependency-boundary rules, complexity ceilings, cycle checks, typed contracts, and test gates that *fail the change* instead of trusting it. ShoreWorks turns those same guards outward — it measures whether a codebase, however it was written and by whoever or whatever, is drifting past its thresholds, and surfaces the drift before it compounds.
+
+The through-line: the environment enforces the architecture. Humans and agents both produce better systems when the boundary is a wall they hit, not a sentence they remember.
+
+---
+
+### ADR-004: Make the agent's environment the enforcement layer
+
+**Context:** AI-assisted development scales output but not judgment. Guidance embedded only in prompts erodes as context grows and agents optimize for the immediate task.
+
+**Decision:** Encode architecture as guards in the environment — static analysis, dependency rules, complexity limits, typed contracts, CI gates — and let both humans and agents work against them. ShoreWorks extends this outward by continuously scoring real repositories against health thresholds.
+
+**Alternatives considered:** Prompt-only guidance (rejected — not enforceable, silently decays); human review as the sole gate (rejected — doesn't scale to agent-speed output, and stays inconsistent between reviewers).
+
+**Consequence:** Architecture stays intact under high-velocity, AI-assisted change, at the cost of up-front investment in guard tooling and some friction on legitimate exceptions.
 
 ## Evidence
 
@@ -805,6 +862,16 @@ function ProductPage() {
                 <div className="flex flex-wrap gap-2 mb-6">
                   {work.tags.map((t) => <Tag key={t}>{t}</Tag>)}
                 </div>
+                {work.url && (
+                  <a
+                    href={work.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
+                  >
+                    View live <ArrowRight size={12} />
+                  </a>
+                )}
               </div>
               <div className="sm:min-w-[180px]">
                 <div className="grid grid-cols-1 gap-px bg-border">
@@ -836,26 +903,46 @@ function CodePage() {
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
-        {CODE_REPOS.map((repo, i) => (
-          <a
-            key={repo.id}
-            href={repo.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col bg-background p-6 transition-colors hover:bg-muted/40"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-              <Github size={14} className="text-muted-foreground flex-shrink-0" />
-              <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide">{repo.title}</h3>
-              <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
+        {CODE_REPOS.map((repo, i) => {
+          const inner = (
+            <>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                {repo.url ? (
+                  <Github size={14} className="text-muted-foreground flex-shrink-0" />
+                ) : (
+                  <Cpu size={14} className="text-muted-foreground flex-shrink-0" />
+                )}
+                <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide">{repo.title}</h3>
+                {repo.url ? (
+                  <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
+                ) : (
+                  <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase ml-auto flex-shrink-0">Private</span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+              </div>
+            </>
+          );
+
+          return repo.url ? (
+            <a
+              key={repo.id}
+              href={repo.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col bg-background p-6 transition-colors hover:bg-muted/40"
+            >
+              {inner}
+            </a>
+          ) : (
+            <div key={repo.id} className="group flex flex-col bg-background p-6">
+              {inner}
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
-            <div className="flex flex-wrap gap-2">
-              {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
-            </div>
-          </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
