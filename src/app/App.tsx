@@ -863,27 +863,6 @@ function PageHeader({
   );
 }
 
-function MetricTile({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: string;
-  accent?: string;
-}) {
-  return (
-    <div className="bg-card border border-border px-4 py-3">
-      <div className="font-mono text-xl font-bold text-foreground" style={accent ? { color: accent } : undefined}>
-        {value}
-      </div>
-      <div className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mt-1">
-        {label}
-      </div>
-    </div>
-  );
-}
-
 function NavItem({
   label,
   section,
@@ -935,24 +914,18 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
       <section className="px-5 sm:px-8 lg:px-10 pt-12 sm:pt-16 pb-12 border-b border-border">
         <div className="max-w-5xl min-w-0">
           <SectionLabel>Daniel Cassil · Principal / Staff Engineer</SectionLabel>
-          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
+          <div className="mt-7 max-w-3xl">
             <div className="min-w-0 max-w-full">
               <h1 className="font-mono text-4xl font-bold leading-[0.95] text-foreground">
-                <span className="block">Systems that</span>
-                <span className="block">scale.</span>
-                <span className="block text-primary">Products built</span>
-                <span className="block text-primary">to last.</span>
+                <span className="block">Systems that scale.</span>
+                <span className="block text-primary">Products built to last.</span>
               </h1>
-              <p className="mt-6 text-base text-muted-foreground max-w-2xl leading-relaxed break-words">
+              <p className="mt-6 text-base text-muted-foreground leading-relaxed break-words">
                 I build software products, platforms, and developer systems from early ideas through production.
-                My work spans enterprise SaaS, real-time systems, workflow automation, architecture guardrails,
-                and tools that improve the quality of both human- and AI-driven development.
+                I do more than implement: I invent, ideate, design, solve, plan, and then build. My work spans
+                enterprise SaaS, real-time systems, workflow automation, architecture guardrails, and tools that
+                improve the quality of both human- and AI-driven development.
               </p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-px bg-border min-w-0 max-w-full">
-              <MetricTile label="Product arcs" value="9" />
-              <MetricTile label="Verified tests" value="950+" accent="#00d4ff" />
-              <MetricTile label="Focus" value="AI systems" accent="#ff6b35" />
             </div>
           </div>
         </div>
