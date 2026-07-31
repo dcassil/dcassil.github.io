@@ -292,6 +292,14 @@ const CODE_REPOS = [
     url: "https://github.com/dcassil/code-audit",
   },
   {
+    id: "ci-health-audit",
+    title: "ci-health-audit",
+    description:
+      "A deterministic 0–10 code-health score for JS/TS codebases, runnable as a CLI, a GitHub Action, or a pre-commit gate. The same static-analysis philosophy behind ShoreWorks, packaged so a build can fail on health drift instead of merging it.",
+    tags: ["TypeScript", "CI", "GitHub Action", "Static Analysis"],
+    url: "https://github.com/dcassil/ci-health-audit",
+  },
+  {
     id: "cadre-architecture-docs",
     title: "cadre-architecture-docs",
     description:
