@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X, Github, ExternalLink, ArrowRight, Terminal, Layers, Box, Cpu, ChevronRight, Sun, Moon } from "lucide-react";
+import friendsOfBrittonLogo from "../assets/portfolio/design/friends-of-britton-logo.png";
+import nauticusBoard from "../assets/portfolio/design/nauticus-board.png";
+import nauticusAnimation from "../assets/portfolio/design/nauticus-animation.png";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Section = "home" | "product" | "code" | "design" | "architecture";
+type Section = "home" | "product" | "code" | "design" | "architecture" | "career";
 type ThemeMode = "light" | "dark";
 
 interface ThemeColors {
@@ -206,7 +209,7 @@ function ThemeControls({
 function useHashRoute(): [Section, (s: Section) => void] {
   const getSection = (): Section => {
     const hash = window.location.hash.replace("#/", "").replace("#", "") as Section;
-    const valid: Section[] = ["product", "code", "design", "architecture"];
+    const valid: Section[] = ["product", "code", "design", "architecture", "career"];
     return valid.includes(hash) ? hash : "home";
   };
   const [section, setSection] = useState<Section>(getSection);
@@ -293,180 +296,222 @@ const CODE_REPOS = [
 
 const PRODUCT_WORK = [
   {
-    id: "meridian",
-    title: "Meridian Design System",
-    period: "2023 → 2024",
-    category: "Product · Design Systems",
+    id: "frame-link-stardust",
+    title: "Frame Link → Stardust Iframe Adapter",
+    period: "2026",
+    category: "Protocol · Visual Editing",
     description:
-      "Built and shipped a cross-platform design system serving 12 product teams and 3 million active users. Established token architecture, Figma component library, and React / React Native implementations from first principles. Reduced design-to-production cycle by 60% — measured across 4 quarters of sprint data.",
-    tags: ["Design Systems", "React", "React Native", "Figma Tokens", "Storybook"],
+      "A typed iframe communication primitive composed into a visual-editing adapter. Frame Link handles secure host/iframe request-response messaging; Stardust maps editable elements inside an embedded site to host-side overlays, content injection, and draft/live flows.",
+    tags: ["TypeScript", "postMessage", "iframe", "Visual Editing"],
     metrics: [
-      { label: "Teams adopted", value: "12" },
-      { label: "Users affected", value: "3M" },
-      { label: "Faster shipping", value: "60%" },
+      { label: "Transport tests", value: "35/35" },
+      { label: "Design arc", value: "Primitive → Product" },
+      { label: "Scope", value: "Adapter + demo" },
     ],
     accent: "#c8f500",
   },
   {
-    id: "flux",
-    title: "Flux — Real-time Collaboration",
-    period: "2022 → 2023",
-    category: "Product · Infrastructure",
+    id: "shore-code",
+    title: "Shore Code + Shore Runner",
+    period: "2026",
+    category: "Developer Tools · SaaS",
     description:
-      "Technical lead and product co-owner for a multiplayer collaboration platform. Designed a CRDT-based data model, led a 6-engineer team, shipped 0→1 in 8 months. Sustained 40k concurrent user sessions at peak. The sync engine became the foundation for two subsequent products.",
-    tags: ["CRDTs", "WebSockets", "Go", "Redis", "Product Strategy"],
+      "A repository health product paired with a stateless scan worker. Shore Code covers GitHub App integration, scan ingest, dashboards, auth/team scaffolding, and Supabase-backed data. Shore Runner leases scans, runs static-analysis toolchains, aggregates metrics, and posts results back.",
+    tags: ["Next.js", "Supabase", "GitHub App", "Workers", "Static Analysis"],
     metrics: [
-      { label: "Time to ship", value: "8mo" },
-      { label: "Concurrent sessions", value: "40k" },
-      { label: "Engineers led", value: "6" },
+      { label: "Product tests", value: "493/493" },
+      { label: "Worker tests", value: "130/130" },
+      { label: "Cycles", value: "0" },
     ],
     accent: "#00d4ff",
   },
   {
-    id: "atlas",
-    title: "Atlas — Internal Developer Platform",
-    period: "2021 → 2022",
-    category: "Platform Engineering",
+    id: "agent-workflows",
+    title: "Katana + Dev Genie",
+    period: "2026",
+    category: "AI Engineering · Workflow Systems",
     description:
-      "Designed and built a self-service IDP that reduced new-service time-to-production from 3 weeks to 4 hours. Included service mesh configuration, automated CI/CD pipelines, and a unified observability dashboard. Adopted by 200+ services within 6 months of launch.",
-    tags: ["Kubernetes", "Terraform", "Go", "React", "Platform Eng"],
+      "Repo-native workflow tooling and a larger AI engineering system: phase machines, gates, markdown/SQLite storage, role runners, protocol schemas, architecture guardrails, audit paths, and plugin packaging.",
+    tags: ["MCP", "CLI", "Protocol Schemas", "Guardrails", "TypeScript"],
     metrics: [
-      { label: "Time-to-prod", value: "3wk → 4hr" },
-      { label: "Services running", value: "200+" },
-      { label: "Infra savings / yr", value: "$2M" },
+      { label: "Katana tests", value: "299/299" },
+      { label: "Dev Genie tests", value: "292" },
+      { label: "Focus", value: "Agent systems" },
     ],
     accent: "#ff6b35",
+  },
+  {
+    id: "knack-live-builder",
+    title: "Knack Live-App Builder Prototype",
+    period: "2023",
+    category: "Product Architecture · UX Systems",
+    description:
+      "A live-app editing prototype that let users interact with their actual hosted app inside an iframe instead of a detached simulation. The model used postMessage, parent-side overlays, context menus, drop zones, drag handles, collaboration states, and draft/versioning concepts.",
+    tags: ["React", "iframe", "postMessage", "Overlays", "Versioning"],
+    metrics: [
+      { label: "Prototype", value: "~3wk" },
+      { label: "Surface", value: "Hosted app" },
+      { label: "Outcome", value: "Roadmap alignment" },
+    ],
+    accent: "#a855f7",
+  },
+  {
+    id: "ladder-demo",
+    title: "Clinical Ladder Product Slice",
+    period: "2026",
+    category: "Domain Modeling · Product Sense",
+    description:
+      "A focused full-stack workflow for clinical ladder submissions: nurse intent, evidence capture, requirement matching, portfolio review, and reviewer decision. It is a constrained product slice, useful because it turns an ambiguous domain into a coherent end-to-end system.",
+    tags: ["Healthcare Workflow", "Supabase", "Forms", "Review Queue"],
+    metrics: [
+      { label: "Scope", value: "End-to-end" },
+      { label: "Model", value: "Portfolio review" },
+      { label: "Cycles", value: "0" },
+    ],
+    accent: "#22c55e",
   },
 ];
 
 const DESIGN_WORK = [
   {
-    title: "Type System for Developer Tools",
+    title: "Friends of Britton Identity",
     description:
-      "A monospace-forward typographic system for terminal and IDE interfaces. Optimized for information density without sacrificing legibility at 11px.",
-    tags: ["Typography", "Developer Tooling", "Systems"],
-    img: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?w=800&h=500&fit=crop&auto=format",
+      "A small elementary-school brand mark. Useful as a compact identity artifact: simple geometry, friendly palette, and an icon that can survive at small sizes.",
+    tags: ["Brand Identity", "Logo", "Visual System"],
+    img: friendsOfBrittonLogo,
   },
   {
-    title: "Cartography UI — Maps as Data",
+    title: "Nauticus Hardware Explainer",
     description:
-      "Interface design for a geospatial analytics product. Designed for dense data layers with systematic approach to color and information hierarchy.",
-    tags: ["Data Vis", "Maps", "Color Theory"],
-    img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=500&fit=crop&auto=format",
+      "Storyboard and visual communication work for a water-sensor product: circuit-board anatomy, component callouts, and copy/layout direction for explaining technical behavior.",
+    tags: ["Product Visualization", "Hardware", "Explainer"],
+    img: nauticusBoard,
   },
   {
-    title: "Motion Language for Mobile",
+    title: "Sensor Animation Frames",
     description:
-      "A motion design system defining easing curves, duration scales, and interaction choreography for a flagship iOS application.",
-    tags: ["Motion Design", "iOS", "Systems"],
-    img: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=500&fit=crop&auto=format",
-  },
-  {
-    title: "Brand Identity — Sequence",
-    description:
-      "Complete brand identity for a developer tooling startup. Wordmark, visual language, and marketing design system built from first principles.",
-    tags: ["Branding", "Identity", "Figma"],
-    img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop&auto=format",
+      "Animation-board work for a product explainer. The value is less the final visual polish and more the translation of a technical device into an understandable sequence.",
+    tags: ["Motion Boards", "Technical Copy", "Storytelling"],
+    img: nauticusAnimation,
   },
 ];
 
-const ARCH_DOC = `# Frontend Platform Architecture
+const CAREER_QUOTES = [
+  {
+    quote:
+      "He is my go to guy for insights on keeping the user first and for squad-wide communication as scrum master.",
+    source: "NetSuite manager review",
+    theme: "User-first product judgment",
+  },
+  {
+    quote:
+      "I can give you something and trust that it is going to be handled properly and on time.",
+    source: "NetSuite manager review",
+    theme: "Ownership and reliability",
+  },
+  {
+    quote:
+      "He sees pain points that need to be solved by certain parties and many times takes it upon himself to make sure that communication is happening.",
+    source: "NetSuite quarterly review",
+    theme: "Cross-team alignment",
+  },
+  {
+    quote:
+      "When I was out for a couple weeks, I was able to trust that the team would still progress and Daniel was a key component to that.",
+    source: "NetSuite quarterly review",
+    theme: "Team continuity",
+  },
+  {
+    quote:
+      "Daniel is an idea guy. He's sharp and up to date on the task at hand.",
+    source: "Matthew Sanders, Human Interface Designer at Apple · client recommendation, 2010",
+    theme: "Product and design thinking",
+  },
+];
 
-\`Q4 2024 · Principal Engineer\`
+const ARCH_DOC = `# Architecture As An Enforced System
+
+\`Selected architecture work · 2015 → 2026\`
 
 ## Overview
 
-This document describes the frontend platform architecture adopted across our product suite. The architecture prioritizes developer velocity, observable systems, and incremental adoption — designed to scale from a single team to 20+ without a global rewrite.
+The strongest thread across my work is turning architecture from prose into working constraints: small primitives, typed contracts, dependency boundaries, tests, review gates, and product workflows that make the intended system easier to keep than to accidentally erode.
 
 ---
 
 ## Core Principles
 
-**Islands of Interactivity**
-Static-first rendering with hydrated interactive islands. Reduces JavaScript payload by 70% on average. Framework-agnostic: React, Svelte, and vanilla JS islands coexist in the same shell.
+**Build a primitive, then compose it**
+Frame Link is the small typed transport. Stardust Iframe Adapter composes that transport into visual editing. The separation keeps the communication layer reusable instead of burying it inside a product.
 
-**Build-time Contract Enforcement**
-Schema-driven API contracts compiled at build time. Breaking changes surface as type errors, not runtime 500s. Contract registry lives alongside the API, versioned with it.
+**Make boundaries executable**
+Shore Code and Shore Runner use layered modules, contract types, tests, and dependency-cycle checks so architecture is continuously visible. The point is not a diagram; the point is a codebase that resists becoming ambiguous.
 
-**Observable by Default**
-Every module emits structured telemetry at the boundary. No manual instrumentation required. Core Web Vitals, custom business events, and error boundaries feed the same pipeline.
-
----
-
-## Layer Diagram
-
-\`\`\`
-┌─────────────────────────────────────────┐
-│              CDN / Edge                  │
-│   Cloudflare Workers · Cache · A/B       │
-└────────────────┬────────────────────────┘
-                 │
-┌────────────────▼────────────────────────┐
-│          Application Shell               │
-│   React 18 · RSC · Streaming SSR         │
-├─────────────────────────────────────────┤
-│          Feature Modules                 │
-│   Lazy-loaded islands · Code-split       │
-├─────────────────────────────────────────┤
-│          Platform Layer                  │
-│   Auth · Feature Flags · Telemetry       │
-├─────────────────────────────────────────┤
-│          API Contracts                   │
-│   tRPC · Zod · OpenAPI spec              │
-└─────────────────────────────────────────┘
-\`\`\`
+**Constrain AI-assisted work**
+Dev Genie and Katana explore repo-native workflows where agents operate inside gates: phases, schemas, architecture-impact artifacts, validation reports, and guardrails. AI output improves when the environment enforces architecture instead of merely describing it.
 
 ---
 
-## Architecture Decision Records
+## Selected Systems
 
-### ADR-001: React Server Components over SPA
+**Frame Link / Stardust**
+Typed iframe host communication, origin-aware request/response flows, host-side overlays, editable-target mapping, content injection, and draft/live concepts.
 
-**Context:** High First Contentful Paint on content-heavy pages. Legacy SPA model hydrating ~420kb of JS before useful content appeared.
+**Shore Code / Shore Runner**
+Multi-tenant code-health product plus stateless worker: GitHub App integration, queued scans, scan leasing, static-analysis orchestration, metrics aggregation, and UI surfaces for understanding codebase health.
 
-**Decision:** Adopt RSC for data-fetching routes while keeping client-only components where interactivity demands it.
+**Katana / Dev Genie**
+Agent workflow tooling built around explicit phase machines, role contracts, structured artifacts, architecture guardrails, and validation paths.
 
-**Consequences:** Streaming SSR reduces TTFB by ~400ms at p75. Bundle size down 45%. Learning curve for the team mitigated with onboarding sessions and internal RFC process.
-
----
-
-### ADR-002: Module Federation for Micro-frontends
-
-**Context:** 8 teams shipping to the same shell. Deployment coupling was a bottleneck — one team's broken build blocked all deploys.
-
-**Decision:** Webpack Module Federation with a contract registry enforced via CI.
-
-**Consequences:** Independent deploys per team. Requires strict API surface versioning — managed via automated compatibility checks in CI. Shared dependencies negotiated at runtime.
+**NetSuite rules and versioning**
+Foundational CMS/eCommerce architecture for draft/live states, scheduled releases, rollback, roll-forward, auditability, and extensibility.
 
 ---
 
-### ADR-003: Edge-first Authentication
+## Architecture Notes
 
-**Context:** Auth latency at 180ms p50 from origin. Users felt the pause on every hard navigation.
+### ADR-001: Keep visual editing transport separate from product behavior
 
-**Decision:** JWT validation at the Cloudflare Worker layer, session data replicated to KV store with 5-minute TTL.
+**Context:** Iframe editing can quickly become a knot of postMessage calls, UI state, persistence, and product-specific assumptions.
 
-**Consequences:** Auth latency reduced to 4ms p50. Invalidation complexity increased — handled via push invalidation escape hatch and short TTL as the primary guard.
+**Decision:** Keep Frame Link as the transport primitive and build the Stardust adapter on top of it.
 
----
-
-## Performance Benchmarks
-
-| Metric        | Before  | After   | Target   |
-|---------------|---------|---------|----------|
-| LCP           | 3.8s    | 1.2s    | < 2.5s   |
-| FID           | 180ms   | 22ms    | < 100ms  |
-| CLS           | 0.18    | 0.04    | < 0.1    |
-| Bundle (gzip) | 420kb   | 95kb    | < 150kb  |
-| TTFB (p75)    | 620ms   | 210ms   | < 400ms  |
+**Consequence:** The transport can stand alone as a small package while the adapter owns visual-editing concerns.
 
 ---
 
-## Team & Governance
+### ADR-002: Treat code-health scanning as product plus infrastructure
 
-The platform team operates as an **enabling team** (Team Topologies). We maintain the build toolchain, CI templates, and platform primitives. Feature teams own their modules end-to-end.
+**Context:** Repository analysis needs a user-facing product surface, but scanning untrusted repositories also needs isolated worker behavior and careful credential handling.
 
-Office hours: Tuesday + Thursday 14:00 UTC
+**Decision:** Split Shore Code from Shore Runner. The product owns auth, teams, dashboards, and scan ingest. The runner owns leasing, scanner orchestration, and result posting.
+
+**Consequence:** The product and worker can evolve independently while preserving a clean operational boundary.
+
+---
+
+### ADR-003: Guardrails beat guidelines for AI work
+
+**Context:** Prompt-only architecture guidance is easy for AI agents to ignore or gradually dilute.
+
+**Decision:** Use static analysis, dependency boundaries, complexity limits, typed contracts, and workflow gates as part of the development environment.
+
+**Consequence:** The architecture becomes a working constraint, not a paragraph people must remember.
+
+## Evidence
+
+- Frame Link: 35/35 tests, typed API, clean dependency graph.
+- Shore Code: typecheck/lint/design-check green, 493/493 unit tests, zero dependency cycles in the reviewed copy.
+- Shore Runner: passing build and 130/130 tests.
+- Katana: passing build and 299/299 tests across the reviewed copy.
+- Dev Genie: build/typecheck/lint green with protocol, role, and engine coverage.
+
+## How I Evaluate Architecture
+
+- Can a new contributor explain the system boundaries without oral tradition?
+- Are the highest-risk decisions captured in code, tests, gates, or schemas?
+- Does the architecture improve product iteration speed, or only look tidy?
+- Can the system absorb AI-assisted change without losing shape?
 `;
 
 // ─── Markdown Renderer ───────────────────────────────────────────────────────
@@ -661,10 +706,11 @@ function NavItem({
 
 function HomePage({ navigate }: { navigate: (s: Section) => void }) {
   const sections: { id: Section; label: string; desc: string; icon: React.ReactNode; accent: string }[] = [
-    { id: "product", label: "Product", desc: "Case studies in platform, tooling, and collaboration.", icon: <Box size={16} />, accent: "#c8f500" },
+    { id: "product", label: "Product", desc: "Real product and platform systems: iframe editing, code health, AI workflow tools.", icon: <Box size={16} />, accent: "#c8f500" },
     { id: "code", label: "Code", desc: "Open-source libraries and tools — TypeScript, protocols, developer systems.", icon: <Terminal size={16} />, accent: "#00d4ff" },
-    { id: "design", label: "Design", desc: "Visual systems, brand identity, motion, and data vis.", icon: <Layers size={16} />, accent: "#ff6b35" },
-    { id: "architecture", label: "Architecture", desc: "Technical documents, ADRs, and platform blueprints.", icon: <Cpu size={16} />, accent: "#a855f7" },
+    { id: "design", label: "Design", desc: "Selected visual and product-communication artifacts.", icon: <Layers size={16} />, accent: "#ff6b35" },
+    { id: "architecture", label: "Architecture", desc: "Architecture as executable boundaries, contracts, tests, and guardrails.", icon: <Cpu size={16} />, accent: "#a855f7" },
+    { id: "career", label: "Working With Me", desc: "Short review excerpts and the collaboration pattern behind the work.", icon: <ExternalLink size={16} />, accent: "#22c55e" },
   ];
 
   return (
@@ -672,7 +718,7 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
       {/* Hero */}
       <section className="px-8 pt-16 pb-20 border-b border-border">
         <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-8">
-          Principal Engineer · Designer · Builder
+          Daniel Cassil · Principal / Staff Engineer
         </p>
         <h1
           className="font-mono font-bold leading-none tracking-tighter text-foreground mb-6"
@@ -689,8 +735,8 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
         <div className="flex items-center gap-6 mt-10">
           <div className="h-px flex-1 bg-border max-w-[80px]" />
           <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
-            I work at the intersection of engineering, design, and product strategy.
-            10 years building systems that reach millions. Currently principal at <span className="text-foreground">Layerstack</span>.
+            I build product systems, developer tools, and architecture guardrails. The pattern:
+            find the primitive, make the boundary explicit, and turn it into something people can use.
           </p>
         </div>
       </section>
@@ -730,7 +776,7 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
       {/* Status bar */}
       <div className="mt-auto px-8 py-4 border-t border-border flex items-center gap-4">
         <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-        <span className="font-mono text-xs text-muted-foreground tracking-widest">Available for principal / staff roles — Q1 2025</span>
+        <span className="font-mono text-xs text-muted-foreground tracking-widest">Available for principal / staff roles — 2026</span>
       </div>
     </div>
   );
@@ -874,6 +920,50 @@ function ArchitecturePage() {
   );
 }
 
+function CareerPage() {
+  return (
+    <div className="px-8 py-12">
+      <header className="mb-12 border-b border-border pb-8">
+        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Working Style</p>
+        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Working With Me</h2>
+        <p className="text-sm text-muted-foreground mt-3 max-w-xl leading-relaxed">
+          A few short excerpts from older reviews, included because they line up with the work I still do:
+          make ambiguous systems clearer, keep the user in view, and help teams move through product and architecture tension.
+        </p>
+      </header>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border mb-12">
+        {CAREER_QUOTES.map((item) => (
+          <article key={item.quote} className="bg-background p-6">
+            <p className="font-mono text-[10px] text-primary tracking-widest uppercase mb-4">{item.theme}</p>
+            <blockquote className="text-sm text-foreground leading-relaxed mb-5">
+              “{item.quote}”
+            </blockquote>
+            <p className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase">{item.source}</p>
+          </article>
+        ))}
+      </div>
+
+      <section className="max-w-2xl">
+        <h3 className="font-mono text-sm font-semibold text-foreground tracking-widest uppercase mb-4">
+          The Pattern
+        </h3>
+        <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+          <p>
+            I tend to be most useful when a team has a real system problem: product intent, UX behavior,
+            architecture, and implementation details are all tangled together and need to become executable.
+          </p>
+          <p>
+            The work usually starts with clarification. What is the actual user path? Which boundary is unstable?
+            What should be a reusable primitive, and what belongs to the product surface? From there, I prefer
+            typed APIs, small modules, tests, and review gates that keep the decision alive after the meeting ends.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 // ─── Page Transition ─────────────────────────────────────────────────────────
 
 function PageTransition({ section, children }: { section: Section; children: React.ReactNode }) {
@@ -912,6 +1002,7 @@ const NAV_ITEMS: { id: Section; label: string; icon: React.ReactNode }[] = [
   { id: "code", label: "Code", icon: <Terminal size={13} /> },
   { id: "design", label: "Design", icon: <ExternalLink size={13} /> },
   { id: "architecture", label: "Architecture", icon: <Cpu size={13} /> },
+  { id: "career", label: "Career", icon: <Box size={13} /> },
 ];
 
 function Sidebar({
@@ -956,10 +1047,10 @@ function Sidebar({
         <div className="px-4 pt-6 pb-5 border-b border-border flex items-center justify-between">
           <div>
             <div className="font-mono text-sm font-bold text-foreground tracking-wider">
-              A<span className="text-primary">.</span>K
+              D<span className="text-primary">.</span>C
             </div>
             <div className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mt-0.5">
-              Principal Eng · Design
+              Principal Eng · Product
             </div>
           </div>
           <button onClick={onClose} className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-1">
@@ -994,7 +1085,7 @@ function Sidebar({
               <Github size={14} />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/daniel-cassil"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors duration-200"
@@ -1004,7 +1095,7 @@ function Sidebar({
             </a>
           </div>
           <div className="font-mono text-[10px] text-muted-foreground tracking-widest">
-            © {new Date().getFullYear()} — A.K.
+            © {new Date().getFullYear()} — D.C.
           </div>
         </div>
       </aside>
@@ -1025,6 +1116,7 @@ export default function App() {
       case "code": return <CodePage />;
       case "design": return <DesignPage />;
       case "architecture": return <ArchitecturePage />;
+      case "career": return <CareerPage />;
       default: return <HomePage navigate={navigate} />;
     }
   };
