@@ -525,13 +525,13 @@ const CAREER_QUOTES = [
     quote:
       "He is my go to guy for insights on keeping the user first and for squad-wide communication as scrum master.",
     source: "NetSuite manager review",
-    theme: "User-first product judgment",
+    theme: "User-first product thinking",
   },
   {
     quote:
       "I can give you something and trust that it is going to be handled properly and on time.",
     source: "NetSuite manager review",
-    theme: "Ownership and reliability",
+    theme: "Ownership and follow-through",
   },
   {
     quote:
@@ -543,13 +543,13 @@ const CAREER_QUOTES = [
     quote:
       "When I was out for a couple weeks, I was able to trust that the team would still progress and Daniel was a key component to that.",
     source: "NetSuite quarterly review",
-    theme: "Team continuity",
+    theme: "Team continuity and trust",
   },
   {
     quote:
       "Daniel is an idea guy. He's sharp and up to date on the task at hand.",
     source: "Matthew Sanders, Human Interface Designer at Apple · client recommendation, 2010",
-    theme: "Product and design thinking",
+    theme: "Product and design instinct",
   },
 ];
 
@@ -922,9 +922,12 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
               </h1>
               <p className="mt-6 text-base text-muted-foreground leading-relaxed break-words">
                 I build software products, platforms, and developer systems from early ideas through production.
-                I do more than implement: I invent, ideate, design, solve, plan, and then build. My work spans
-                enterprise SaaS, real-time systems, workflow automation, architecture guardrails, and tools that
-                improve the quality of both human- and AI-driven development.
+                My role goes beyond implementation: I shape the idea, define the product, design the system,
+                solve the hard problems, and lead it through delivery. I work across disciplines — bringing
+                stakeholders, product, design, engineering, and QA into alignment around a clear vision and a
+                cohesive solution. My work spans enterprise SaaS, real-time systems, workflow automation,
+                architectural guardrails, and tools that improve the quality of both human- and AI-driven
+                development.
               </p>
             </div>
           </div>
@@ -984,7 +987,7 @@ function ProductPage() {
       <PageHeader
         eyebrow="Selected Work"
         title="Product"
-        description="Product and platform systems with enough implementation detail to show the architecture behind the surface."
+        description="Product-first work spanning strategy, experience, systems, and delivery — built around real user needs and carried through production."
       />
 
       <div className="flex flex-col divide-y divide-border">
@@ -1037,7 +1040,7 @@ function CodePage() {
       <PageHeader
         eyebrow="Open Source"
         title="Code"
-        description="A selection of public repositories and private product systems, grouped around protocol design, visual editing, code health, and agent workflow tooling."
+        description="A closer look at how I design and build software: public libraries, private product systems, and the architectural patterns behind them. The work spans typed protocols, visual tooling, code health, agent workflows, and systems designed to remain clear, testable, and dependable as they grow."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
@@ -1092,7 +1095,7 @@ function ExperiencePage() {
       <PageHeader
         eyebrow="Experience"
         title="Companies"
-        description="Selected company work across AI/ML platforms, application builders, enterprise SaaS, eCommerce, CMS systems, and engineering leadership."
+        description="Selected work across AI/ML products, application-building platforms, enterprise SaaS, eCommerce, and content systems — spanning product development, platform architecture, technical strategy, and engineering leadership."
       />
 
       <div className="flex flex-col divide-y divide-border">
@@ -1145,7 +1148,7 @@ function ArchitecturePage() {
       <PageHeader
         eyebrow="Technical Writing"
         title="Architecture"
-        description="Architecture treated as an enforced system: boundaries, contracts, tests, and review gates."
+        description="Architecture works best when it is more than documentation. These pieces explore how principles become practical constraints through composable primitives, dependency boundaries, typed interfaces, automated tests, and delivery workflows."
       >
         <Tag>Markdown</Tag>
         <Tag>ADR</Tag>
@@ -1164,7 +1167,7 @@ function CareerPage() {
       <PageHeader
         eyebrow="Working Style"
         title="Working With Me"
-        description="A few short excerpts from older reviews, included because they line up with the work I still do: make ambiguous systems clearer, keep the user in view, and help teams move through product and architecture tension."
+        description="A few excerpts from past reviews and recommendations that reflect how I still work today: bringing clarity to ambiguous problems, keeping the user in view, taking ownership, and helping teams stay aligned through product and architecture decisions."
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-12">
