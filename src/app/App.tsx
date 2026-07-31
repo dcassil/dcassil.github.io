@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Menu, X, Github, ExternalLink, ArrowRight, Terminal, Layers, Box, Cpu, ChevronRight, Sun, Moon } from "lucide-react";
-import friendsOfBrittonLogo from "../assets/portfolio/design/friends-of-britton-logo.png";
-import nauticusBoard from "../assets/portfolio/design/nauticus-board.png";
-import nauticusAnimation from "../assets/portfolio/design/nauticus-animation.png";
+import { Menu, X, Github, ExternalLink, ArrowRight, Terminal, Layers, Box, Cpu, ChevronRight, Sun, Moon, Briefcase, Mail, Linkedin, Package } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Section = "home" | "product" | "code" | "design" | "architecture" | "career";
+type Section = "home" | "product" | "code" | "experience" | "architecture" | "career";
 type ThemeMode = "light" | "dark";
 
 interface ThemeColors {
@@ -21,6 +18,18 @@ interface ThemeEntry {
   name: string;
   dark: ThemeColors;
   light: ThemeColors;
+}
+
+const CONTACT_EMAIL_CODES = [
+  102, 111, 114, 104, 105, 114, 101, 64, 100, 97, 110, 105, 101, 108, 99,
+  97, 115, 115, 105, 108, 46, 99, 111, 109,
+];
+const CONTACT_SCHEME_CODES = [109, 97, 105, 108, 116, 111];
+
+function openContactEmail() {
+  const email = String.fromCharCode(...CONTACT_EMAIL_CODES);
+  const scheme = String.fromCharCode(...CONTACT_SCHEME_CODES);
+  window.location.href = `${scheme}:${email}`;
 }
 
 // ─── Theme Config ─────────────────────────────────────────────────────────────
@@ -105,7 +114,7 @@ function applyTheme(c: ThemeColors) {
     "--muted-foreground":      c.secondaryFt,
     "--accent":                c.contrast,
     "--accent-foreground":     onContrast,
-    "--border":                `rgba(${fr},${fg},${fb},0.12)`,
+    "--border":                `rgba(${fr},${fg},${fb},0.16)`,
     "--ring":                  c.contrast,
     "--input":                 c.secondaryBg,
     "--input-background":      c.secondaryBg,
@@ -193,7 +202,7 @@ function ThemeControls({
       <select
         value={themeName}
         onChange={(e) => setThemeName(e.target.value)}
-        className="font-mono text-[10px] tracking-widest bg-card text-muted-foreground border border-border px-2 py-1.5 cursor-pointer hover:text-foreground transition-colors duration-150 outline-none focus:ring-1 focus:ring-ring appearance-none pr-5"
+        className="hidden sm:block font-mono text-[10px] tracking-widest bg-card text-muted-foreground border border-border px-2 py-1.5 cursor-pointer hover:text-foreground transition-colors duration-150 outline-none focus:ring-1 focus:ring-ring appearance-none pr-5 w-[10rem]"
         style={{ backgroundImage: "none" }}
       >
         {THEMES.map((t) => (
@@ -209,7 +218,7 @@ function ThemeControls({
 function useHashRoute(): [Section, (s: Section) => void] {
   const getSection = (): Section => {
     const hash = window.location.hash.replace("#/", "").replace("#", "") as Section;
-    const valid: Section[] = ["product", "code", "design", "architecture", "career"];
+    const valid: Section[] = ["product", "code", "experience", "architecture", "career"];
     return valid.includes(hash) ? hash : "home";
   };
   const [section, setSection] = useState<Section>(getSection);
@@ -316,7 +325,7 @@ const PRODUCT_WORK = [
     period: "2026",
     category: "Developer Tools · SaaS · Live",
     description:
-      "The live product face of my code-health work. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
+      "The live product face of the ShoreGuard software-health system. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
     tags: ["Next.js", "Supabase", "Code Health", "SaaS", "Founder-facing"],
     metrics: [
       { label: "Health score", value: "92 vs 65" },
@@ -327,27 +336,12 @@ const PRODUCT_WORK = [
     url: "https://www.casspear.com/",
   },
   {
-    id: "frame-link-stardust",
-    title: "Frame Link → Stardust Iframe Adapter",
-    period: "2026",
-    category: "Protocol · Visual Editing",
-    description:
-      "A typed iframe communication primitive composed into a visual-editing adapter. Frame Link handles secure host/iframe request-response messaging; Stardust maps editable elements inside an embedded site to host-side overlays, content injection, and draft/live flows.",
-    tags: ["TypeScript", "postMessage", "iframe", "Visual Editing"],
-    metrics: [
-      { label: "Transport tests", value: "35/35" },
-      { label: "Design arc", value: "Primitive → Product" },
-      { label: "Scope", value: "Adapter + demo" },
-    ],
-    accent: "#c8f500",
-  },
-  {
     id: "shore-code",
     title: "Shore Code + Shore Runner",
     period: "2026",
     category: "Developer Tools · SaaS",
     description:
-      "The engineering substrate behind ShoreWorks: a repository-health product paired with a stateless scan worker. Shore Code covers GitHub App integration, scan ingest, dashboards, auth/team scaffolding, and Supabase-backed data. Shore Runner leases scans, runs static-analysis toolchains, aggregates metrics, and posts results back — never persisting customer source.",
+      "The product and worker substrate behind ShoreGuard. Shore Code and Shore Runner help teams understand the condition of their codebase, track how it changes over time, and identify the areas most likely to slow development or introduce risk. The system connects securely to GitHub, analyzes repositories without retaining customer source code, and turns technical findings into clear health scores, trends, and actionable insights.",
     tags: ["Next.js", "Supabase", "GitHub App", "Workers", "Static Analysis"],
     metrics: [
       { label: "Product tests", value: "493/493" },
@@ -357,12 +351,42 @@ const PRODUCT_WORK = [
     accent: "#00d4ff",
   },
   {
+    id: "shoreguard",
+    title: "ShoreGuard",
+    period: "2026",
+    category: "Codebase Protection · AI Guardrails",
+    description:
+      "A codebase protection system that keeps software healthy as teams and AI agents continue building. It turns architectural standards, code-quality expectations, and project-specific rules into automated guardrails that catch drift, prevent regressions, and improve the codebase with every commit.",
+    tags: ["Code Health", "Architecture Guardrails", "AI Development", "CI"],
+    metrics: [
+      { label: "System role", value: "Guardrails" },
+      { label: "Feedback loop", value: "Every commit" },
+      { label: "Goal", value: "Less drift" },
+    ],
+    accent: "#00d4ff",
+  },
+  {
+    id: "multi-tenant-code-intelligence",
+    title: "Multi-Tenant Code Intelligence Platform",
+    period: "2026",
+    category: "Enterprise SaaS · Code Intelligence",
+    description:
+      "An organization-wide software health platform built to evaluate codebases across multiple teams, products, and repositories. It combines automated analysis, historical trends, and shared engineering standards to help leaders identify systemic risk, compare code health across the organization, and focus improvement efforts where they will have the greatest impact.",
+    tags: ["Multi-Tenant SaaS", "Code Health", "Engineering Standards", "Analytics"],
+    metrics: [
+      { label: "Scope", value: "Org-wide" },
+      { label: "Signal", value: "Trends" },
+      { label: "Focus", value: "Risk" },
+    ],
+    accent: "#00d4ff",
+  },
+  {
     id: "agent-workflows",
     title: "Katana + Dev Genie",
     period: "2026",
     category: "AI Engineering · Workflow Systems",
     description:
-      "Repo-native workflow tooling and a larger AI engineering system: phase machines, gates, markdown/SQLite storage, role runners, protocol schemas, architecture guardrails, audit paths, and plugin packaging.",
+      "An AI engineering system that brings structure, consistency, and oversight to complex software development. It coordinates specialized agents through defined workflows, quality gates, architectural rules, and auditable decision paths — helping teams move faster without losing control of how software is designed, built, and maintained.",
     tags: ["MCP", "CLI", "Protocol Schemas", "Guardrails", "TypeScript"],
     metrics: [
       { label: "Katana tests", value: "299/299" },
@@ -370,6 +394,21 @@ const PRODUCT_WORK = [
       { label: "Focus", value: "Agent systems" },
     ],
     accent: "#ff6b35",
+  },
+  {
+    id: "governance-meeting-intelligence",
+    title: "Governance Meeting Intelligence Platform",
+    period: "2026",
+    category: "Workflow Automation · AI Intelligence",
+    description:
+      "A meeting workflow system that turns recorded governance sessions into structured, usable outcomes. It captures and transcribes meetings, uses AI to identify decisions, action items, owners, deadlines, risks, and key discussion themes, then organizes the results into reviewable minutes and a searchable institutional record.",
+    tags: ["AI", "Transcription", "Governance", "Workflow Automation"],
+    metrics: [
+      { label: "Inputs", value: "Meetings" },
+      { label: "Outputs", value: "Minutes" },
+      { label: "Record", value: "Searchable" },
+    ],
+    accent: "#22c55e",
   },
   {
     id: "knack-live-builder",
@@ -385,6 +424,21 @@ const PRODUCT_WORK = [
       { label: "Outcome", value: "Roadmap alignment" },
     ],
     accent: "#a855f7",
+  },
+  {
+    id: "frame-link-stardust",
+    title: "Frame Link → Stardust Iframe Adapter",
+    period: "2021",
+    category: "Protocol · Visual Editing",
+    description:
+      "A typed iframe communication primitive composed into a visual-editing adapter. Frame Link handles secure host/iframe request-response messaging; Stardust maps editable elements inside an embedded site to host-side overlays, content injection, and draft/live flows.",
+    tags: ["TypeScript", "postMessage", "iframe", "Visual Editing"],
+    metrics: [
+      { label: "Transport tests", value: "35/35" },
+      { label: "Design arc", value: "Primitive → Product" },
+      { label: "Scope", value: "Adapter + demo" },
+    ],
+    accent: "#c8f500",
   },
   {
     id: "ladder-demo",
@@ -403,27 +457,66 @@ const PRODUCT_WORK = [
   },
 ];
 
-const DESIGN_WORK = [
+const EXPERIENCE_WORK = [
   {
-    title: "Friends of Britton Identity",
-    description:
-      "A small elementary-school brand mark. Useful as a compact identity artifact: simple geometry, friendly palette, and an icon that can survive at small sizes.",
-    tags: ["Brand Identity", "Logo", "Visual System"],
-    img: friendsOfBrittonLogo,
+    company: "Hiveginx",
+    role: "Co-Founder",
+    period: "Apr 2025 - Apr 2026",
+    location: "AI/ML product suite",
+    summary:
+      "Joined as a founding team member to design and build the foundation of a growing AI/ML product suite spanning medical, banking, and bidding-platform use cases.",
+    highlights: [
+      "Led development across frontend, backend, and multi-tenant database architecture.",
+      "Built initially on AWS, then helped guide the platform through a transition to Azure.",
+      "Shaped core capabilities around identity confirmation, customer qualification, risk detection, reporting, onboarding workflow builders, customer management, inventory, and dashboard-based claim initiation.",
+      "Worked closely with executive and technical leadership as the platform expanded across products and industries.",
+    ],
+    tags: ["AI/ML", "Multi-Tenant Architecture", "AWS", "Azure", "Product Foundation"],
   },
   {
-    title: "Nauticus Hardware Explainer",
-    description:
-      "Storyboard and visual communication work for a water-sensor product: circuit-board anatomy, component callouts, and copy/layout direction for explaining technical behavior.",
-    tags: ["Product Visualization", "Hardware", "Explainer"],
-    img: nauticusBoard,
+    company: "Knack",
+    role: "Staff Engineer Front End",
+    period: "Mar 2023 - Jan 2024",
+    location: "Remote",
+    summary:
+      "Brought in to evaluate and define modernization paths for core application-building systems moving from Vue and Backbone toward React.",
+    highlights: [
+      "Produced strategic implementation options with tradeoffs, risks, time estimates, and expected benefits.",
+      "Partnered with Product, Design, and Engineering to shape the target concept and execution plan for interactive app-building experiences.",
+      "Contributed to early AI work on the platform.",
+      "Researched and prototyped options for building or integrating an IPaaS solution.",
+    ],
+    tags: ["React", "Vue", "Backbone", "Product Strategy", "AI Prototypes"],
   },
   {
-    title: "Sensor Animation Frames",
-    description:
-      "Animation-board work for a product explainer. The value is less the final visual polish and more the translation of a technical device into an understandable sequence.",
-    tags: ["Motion Boards", "Technical Copy", "Storytelling"],
-    img: nauticusAnimation,
+    company: "Oracle NetSuite",
+    role: "Senior Software Engineer · Manager · Team Lead",
+    period: "Jan 2016 - Apr 2021",
+    location: "Oklahoma City Metropolitan Area",
+    summary:
+      "Worked across engineering leadership, product recovery, and R&D-focused architecture for enterprise eCommerce and CMS systems after the NetSuite acquisition by Oracle.",
+    highlights: [
+      "Managed a team of JavaScript engineers building and improving React-based eCommerce and website-management CMS products.",
+      "Served in an R&D role evaluating frontend frameworks, internal platform technologies, and architectural options for new product directions.",
+      "Led a stalled major redesign effort back to a viable plan by aligning architecture, design, engineering, and delivery scope.",
+      "Balanced hands-on implementation with project management, product tradeoffs, deadline negotiation, and expectation resets.",
+    ],
+    tags: ["React", "CMS", "eCommerce", "Engineering Management", "R&D"],
+  },
+  {
+    company: "NetSuite",
+    role: "Senior Software Engineer",
+    period: "Mar 2013 - Apr 2021",
+    location: "Oklahoma City Metropolitan Area",
+    summary:
+      "Built enterprise eCommerce and content-management systems before and through NetSuite's acquisition by Oracle.",
+    highlights: [
+      "Solved complex data-architecture and code-design problems with direct impact on customer-facing UX.",
+      "Bridged engineering and design by managing SCSS and JavaScript implementation for UI/UX-heavy product work.",
+      "Helped build enterprise software intended to feel as usable and polished as modern startup products.",
+      "Expanded from individual contributor work into cross-functional product, design, and engineering coordination.",
+    ],
+    tags: ["JavaScript", "SCSS", "Webpack", "Enterprise SaaS", "UI Architecture"],
   },
 ];
 
@@ -658,7 +751,7 @@ function MarkdownRenderer({ content }: { content: string }) {
     // H1
     else if (line.startsWith("# ")) {
       elements.push(
-        <h1 key={i} className="font-mono text-2xl font-bold text-foreground mt-10 mb-4 leading-tight tracking-tight">
+        <h1 key={i} className="font-mono text-2xl font-bold text-foreground mt-10 mb-4 leading-tight">
           {line.slice(2)}
         </h1>
       );
@@ -727,9 +820,67 @@ function MarkdownRenderer({ content }: { content: string }) {
 
 function Tag({ children }: { children: string }) {
   return (
-    <span className="inline-block font-mono text-[10px] text-muted-foreground border border-border px-2 py-0.5 tracking-wider uppercase">
+    <span className="inline-flex items-center h-6 font-mono text-[10px] text-muted-foreground border border-border/80 bg-muted/30 px-2 tracking-wider uppercase">
       {children}
     </span>
+  );
+}
+
+function SectionLabel({ children }: { children: string }) {
+  return (
+    <p className="font-mono text-[11px] text-primary tracking-widest uppercase">
+      {children}
+    </p>
+  );
+}
+
+function PageHeader({
+  eyebrow,
+  title,
+  description,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <header className="mb-10 border-b border-border pb-8">
+      <SectionLabel>{eyebrow}</SectionLabel>
+      <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <h2 className="font-mono text-3xl font-bold text-foreground">{title}</h2>
+          {description && (
+            <p className="text-sm text-muted-foreground mt-3 max-w-2xl leading-relaxed">
+              {description}
+            </p>
+          )}
+        </div>
+        {children && <div className="flex flex-wrap gap-2">{children}</div>}
+      </div>
+    </header>
+  );
+}
+
+function MetricTile({
+  label,
+  value,
+  accent,
+}: {
+  label: string;
+  value: string;
+  accent?: string;
+}) {
+  return (
+    <div className="bg-card border border-border px-4 py-3">
+      <div className="font-mono text-xl font-bold text-foreground" style={accent ? { color: accent } : undefined}>
+        {value}
+      </div>
+      <div className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mt-1">
+        {label}
+      </div>
+    </div>
   );
 }
 
@@ -749,14 +900,14 @@ function NavItem({
   return (
     <button
       onClick={onClick}
-      className={`group w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all duration-200 font-mono text-xs tracking-widest uppercase relative ${
+      className={`group w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-200 font-mono text-[11px] tracking-widest uppercase relative ${
         active
-          ? "text-primary"
-          : "text-muted-foreground hover:text-foreground"
+          ? "text-primary bg-sidebar-accent"
+          : "text-muted-foreground hover:text-foreground hover:bg-sidebar-accent/70"
       }`}
     >
       {active && (
-        <span className="absolute left-0 top-0 bottom-0 w-px bg-primary" />
+        <span className="absolute left-0 top-2 bottom-2 w-0.5 bg-primary" />
       )}
       <span className={`transition-colors duration-200 ${active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}>
         {icon}
@@ -773,7 +924,7 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
   const sections: { id: Section; label: string; desc: string; icon: React.ReactNode; accent: string }[] = [
     { id: "product", label: "Product", desc: "Real product and platform systems: iframe editing, code health, AI workflow tools.", icon: <Box size={16} />, accent: "#c8f500" },
     { id: "code", label: "Code", desc: "Open-source libraries and tools — TypeScript, protocols, developer systems.", icon: <Terminal size={16} />, accent: "#00d4ff" },
-    { id: "design", label: "Design", desc: "Selected visual and product-communication artifacts.", icon: <Layers size={16} />, accent: "#ff6b35" },
+    { id: "experience", label: "Experience", desc: "Company work across AI products, app builders, enterprise SaaS, and eCommerce platforms.", icon: <Briefcase size={16} />, accent: "#ff6b35" },
     { id: "architecture", label: "Architecture", desc: "Architecture as executable boundaries, contracts, tests, and guardrails.", icon: <Cpu size={16} />, accent: "#a855f7" },
     { id: "career", label: "Working With Me", desc: "Short review excerpts and the collaboration pattern behind the work.", icon: <ExternalLink size={16} />, accent: "#22c55e" },
   ];
@@ -781,42 +932,49 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
   return (
     <div className="flex flex-col min-h-full">
       {/* Hero */}
-      <section className="px-8 pt-16 pb-20 border-b border-border">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-8">
-          Daniel Cassil · Principal / Staff Engineer
-        </p>
-        <h1
-          className="font-mono font-bold leading-none tracking-tighter text-foreground mb-6"
-          style={{ fontSize: "clamp(2.4rem, 6vw, 5rem)" }}
-        >
-          Systems
-          <br />
-          <span className="text-primary">at scale.</span>
-          <br />
-          Products
-          <br />
-          that land.
-        </h1>
-        <div className="flex items-center gap-6 mt-10">
-          <div className="h-px flex-1 bg-border max-w-[80px]" />
-          <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
-            I build product systems, developer tools, and architecture guardrails. The pattern:
-            find the primitive, make the boundary explicit, and turn it into something people can use.
-          </p>
+      <section className="px-5 sm:px-8 lg:px-10 pt-12 sm:pt-16 pb-12 border-b border-border">
+        <div className="max-w-5xl min-w-0">
+          <SectionLabel>Daniel Cassil · Principal / Staff Engineer</SectionLabel>
+          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
+            <div className="min-w-0 max-w-full">
+              <h1 className="font-mono text-4xl font-bold leading-[0.95] text-foreground">
+                <span className="block">Systems that</span>
+                <span className="block">scale.</span>
+                <span className="block text-primary">Products built</span>
+                <span className="block text-primary">to last.</span>
+              </h1>
+              <p className="mt-6 text-base text-muted-foreground max-w-2xl leading-relaxed break-words">
+                I build software products, platforms, and developer systems from early ideas through production.
+                My work spans enterprise SaaS, real-time systems, workflow automation, architecture guardrails,
+                and tools that improve the quality of both human- and AI-driven development.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-px bg-border min-w-0 max-w-full">
+              <MetricTile label="Product arcs" value="9" />
+              <MetricTile label="Verified tests" value="950+" accent="#00d4ff" />
+              <MetricTile label="Focus" value="AI systems" accent="#ff6b35" />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Selected work grid */}
-      <section className="px-8 pt-12 pb-16">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-8">
-          Selected Work
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
+      <section className="px-5 sm:px-8 lg:px-10 pt-10 pb-14">
+        <div className="mb-6 flex items-end justify-between gap-6">
+          <div>
+            <SectionLabel>Selected Work</SectionLabel>
+            <h2 className="font-mono text-xl font-semibold text-foreground mt-2">
+              Navigate by signal
+            </h2>
+          </div>
+          <div className="hidden sm:block h-px flex-1 bg-border max-w-40" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
           {sections.map((s) => (
             <button
               key={s.id}
               onClick={() => navigate(s.id)}
-              className="group bg-background p-6 text-left hover:bg-muted transition-colors duration-200 flex flex-col gap-4"
+              className="group bg-card border border-border p-5 text-left hover:border-primary/40 hover:bg-muted/40 transition-all duration-200 flex flex-col gap-5 min-h-[170px]"
             >
               <div className="flex items-center justify-between">
                 <span style={{ color: s.accent }} className="transition-transform duration-200 group-hover:scale-110">
@@ -839,9 +997,9 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
       </section>
 
       {/* Status bar */}
-      <div className="mt-auto px-8 py-4 border-t border-border flex items-center gap-4">
+      <div className="mt-auto px-5 sm:px-8 lg:px-10 py-4 border-t border-border flex items-center gap-4 bg-card/60">
         <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-        <span className="font-mono text-xs text-muted-foreground tracking-widest">Available for principal / staff roles — 2026</span>
+        <span className="font-mono text-[11px] text-muted-foreground tracking-widest uppercase">Available for principal / staff roles — 2026</span>
       </div>
     </div>
   );
@@ -849,11 +1007,12 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
 
 function ProductPage() {
   return (
-    <div className="px-8 py-12">
-      <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Selected Work</p>
-        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Product</h2>
-      </header>
+    <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
+      <PageHeader
+        eyebrow="Selected Work"
+        title="Product"
+        description="Product and platform systems with enough implementation detail to show the architecture behind the surface."
+      />
 
       <div className="flex flex-col divide-y divide-border">
         {PRODUCT_WORK.map((work) => (
@@ -881,10 +1040,10 @@ function ProductPage() {
                   </a>
                 )}
               </div>
-              <div className="sm:min-w-[180px]">
-                <div className="grid grid-cols-1 gap-px bg-border">
+              <div className="w-full sm:w-[220px] sm:flex-none">
+                <div className="grid grid-cols-3 sm:grid-cols-1 gap-px bg-border">
                   {work.metrics.map((m) => (
-                    <div key={m.label} className="bg-background px-4 py-3">
+                    <div key={m.label} className="bg-card px-4 py-3 min-w-0">
                       <div className="font-mono text-lg font-bold" style={{ color: work.accent }}>{m.value}</div>
                       <div className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase mt-0.5">{m.label}</div>
                     </div>
@@ -901,27 +1060,25 @@ function ProductPage() {
 
 function CodePage() {
   return (
-    <div className="px-8 py-12">
-      <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Open Source</p>
-        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Code</h2>
-        <p className="text-sm text-muted-foreground mt-3 max-w-md leading-relaxed">
-          A selection of my public repositories. Each links straight to the source on GitHub.
-        </p>
-      </header>
+    <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
+      <PageHeader
+        eyebrow="Open Source"
+        title="Code"
+        description="A selection of public repositories and private product systems, grouped around protocol design, visual editing, code health, and agent workflow tooling."
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {CODE_REPOS.map((repo, i) => {
           const inner = (
             <>
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-4 min-w-0">
                 <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
                 {repo.url ? (
                   <Github size={14} className="text-muted-foreground flex-shrink-0" />
                 ) : (
                   <Cpu size={14} className="text-muted-foreground flex-shrink-0" />
                 )}
-                <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide">{repo.title}</h3>
+                <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide truncate">{repo.title}</h3>
                 {repo.url ? (
                   <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
                 ) : (
@@ -941,12 +1098,12 @@ function CodePage() {
               href={repo.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col bg-background p-6 transition-colors hover:bg-muted/40"
+              className="group flex flex-col bg-card border border-border p-5 transition-all hover:bg-muted/40 hover:border-primary/40"
             >
               {inner}
             </a>
           ) : (
-            <div key={repo.id} className="group flex flex-col bg-background p-6">
+            <div key={repo.id} className="group flex flex-col bg-card border border-border p-5">
               {inner}
             </div>
           );
@@ -956,39 +1113,50 @@ function CodePage() {
   );
 }
 
-function DesignPage() {
-  const [selected, setSelected] = useState<number | null>(null);
-
+function ExperiencePage() {
   return (
-    <div className="px-8 py-12">
-      <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Visual Work</p>
-        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Design</h2>
-      </header>
+    <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
+      <PageHeader
+        eyebrow="Experience"
+        title="Companies"
+        description="Selected company work across AI/ML platforms, application builders, enterprise SaaS, eCommerce, CMS systems, and engineering leadership."
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border">
-        {DESIGN_WORK.map((work, i) => (
-          <article
-            key={i}
-            className="group bg-background cursor-pointer"
-            onClick={() => setSelected(selected === i ? null : i)}
-          >
-            <div className="overflow-hidden bg-muted aspect-video">
-              <img
-                src={work.img}
-                alt={work.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-60 group-hover:opacity-80"
-              />
-            </div>
-            <div className="p-5">
-              <h3 className="font-mono text-sm font-semibold text-foreground mb-2 leading-snug">{work.title}</h3>
-              {selected === i && (
-                <p className="text-xs text-muted-foreground leading-relaxed mb-3 transition-all">
-                  {work.description}
+      <div className="flex flex-col divide-y divide-border">
+        {EXPERIENCE_WORK.map((item) => (
+          <article key={`${item.company}-${item.role}`} className="py-9">
+            <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+              <div>
+                <p className="font-mono text-[10px] text-primary tracking-widest uppercase mb-3">
+                  {item.period}
                 </p>
-              )}
-              <div className="flex flex-wrap gap-2">
-                {work.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+                <h3 className="font-mono text-xl font-bold text-foreground leading-tight">
+                  {item.company}
+                </h3>
+                <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mt-3">
+                  {item.role}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {item.location}
+                </p>
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm text-foreground leading-relaxed max-w-3xl">
+                  {item.summary}
+                </p>
+                <ul className="mt-5 space-y-2">
+                  {item.highlights.map((highlight) => (
+                    <li key={highlight} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
+                      <span className="text-primary mt-0.5 flex-shrink-0">—</span>
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap gap-2 mt-6">
+                  {item.tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </div>
               </div>
             </div>
           </article>
@@ -1000,36 +1168,35 @@ function DesignPage() {
 
 function ArchitecturePage() {
   return (
-    <div className="px-8 py-12">
-      <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Technical Writing</p>
-        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Architecture</h2>
-        <div className="flex gap-3 mt-4">
-          <Tag>Markdown</Tag>
-          <Tag>ADR</Tag>
-          <Tag>Living Document</Tag>
-        </div>
-      </header>
-      <MarkdownRenderer content={ARCH_DOC} />
+    <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
+      <PageHeader
+        eyebrow="Technical Writing"
+        title="Architecture"
+        description="Architecture treated as an enforced system: boundaries, contracts, tests, and review gates."
+      >
+        <Tag>Markdown</Tag>
+        <Tag>ADR</Tag>
+        <Tag>Living Document</Tag>
+      </PageHeader>
+      <div className="bg-card border border-border p-5 sm:p-8">
+        <MarkdownRenderer content={ARCH_DOC} />
+      </div>
     </div>
   );
 }
 
 function CareerPage() {
   return (
-    <div className="px-8 py-12">
-      <header className="mb-12 border-b border-border pb-8">
-        <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mb-3">Working Style</p>
-        <h2 className="font-mono text-3xl font-bold text-foreground tracking-tight">Working With Me</h2>
-        <p className="text-sm text-muted-foreground mt-3 max-w-xl leading-relaxed">
-          A few short excerpts from older reviews, included because they line up with the work I still do:
-          make ambiguous systems clearer, keep the user in view, and help teams move through product and architecture tension.
-        </p>
-      </header>
+    <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
+      <PageHeader
+        eyebrow="Working Style"
+        title="Working With Me"
+        description="A few short excerpts from older reviews, included because they line up with the work I still do: make ambiguous systems clearer, keep the user in view, and help teams move through product and architecture tension."
+      />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-12">
         {CAREER_QUOTES.map((item) => (
-          <article key={item.quote} className="bg-background p-6">
+          <article key={item.quote} className="bg-card border border-border p-5 sm:p-6">
             <p className="font-mono text-[10px] text-primary tracking-widest uppercase mb-4">{item.theme}</p>
             <blockquote className="text-sm text-foreground leading-relaxed mb-5">
               “{item.quote}”
@@ -1095,7 +1262,7 @@ const NAV_ITEMS: { id: Section; label: string; icon: React.ReactNode }[] = [
   { id: "home", label: "Overview", icon: <Box size={13} /> },
   { id: "product", label: "Product", icon: <Layers size={13} /> },
   { id: "code", label: "Code", icon: <Terminal size={13} /> },
-  { id: "design", label: "Design", icon: <ExternalLink size={13} /> },
+  { id: "experience", label: "Experience", icon: <Briefcase size={13} /> },
   { id: "architecture", label: "Architecture", icon: <Cpu size={13} /> },
   { id: "career", label: "Career", icon: <Box size={13} /> },
 ];
@@ -1131,7 +1298,7 @@ function Sidebar({
 
       <aside
         className={`
-          fixed top-0 left-0 bottom-0 z-40 w-56 bg-background border-r border-border
+          fixed top-0 left-0 bottom-0 z-40 w-64 bg-sidebar border-r border-sidebar-border
           flex flex-col
           transition-transform duration-300 ease-in-out
           ${open ? "translate-x-0" : "-translate-x-full"}
@@ -1139,7 +1306,7 @@ function Sidebar({
         `}
       >
         {/* Logo */}
-        <div className="px-4 pt-6 pb-5 border-b border-border flex items-center justify-between">
+        <div className="px-4 pt-6 pb-5 border-b border-sidebar-border flex items-center justify-between">
           <div>
             <div className="font-mono text-sm font-bold text-foreground tracking-wider">
               D<span className="text-primary">.</span>C
@@ -1154,7 +1321,7 @@ function Sidebar({
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 pt-4 pb-4">
+        <nav className="flex-1 pt-4 pb-4 px-2">
           {NAV_ITEMS.map((item) => (
             <NavItem
               key={item.id}
@@ -1168,8 +1335,16 @@ function Sidebar({
         </nav>
 
         {/* Footer */}
-        <div className="px-4 pb-6 pt-4 border-t border-border">
+        <div className="px-4 pb-6 pt-4 border-t border-sidebar-border">
           <div className="flex gap-3 mb-4">
+            <button
+              type="button"
+              onClick={openContactEmail}
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              aria-label="Email Daniel"
+            >
+              <Mail size={14} />
+            </button>
             <a
               href="https://github.com/dcassil"
               target="_blank"
@@ -1180,13 +1355,22 @@ function Sidebar({
               <Github size={14} />
             </a>
             <a
-              href="https://www.linkedin.com/in/daniel-cassil"
+              href="https://www.linkedin.com/in/daniel-cassil-3761595/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors duration-200"
               aria-label="LinkedIn"
             >
-              <ExternalLink size={14} />
+              <Linkedin size={14} />
+            </a>
+            <a
+              href="https://www.npmjs.com/~dpcassil01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors duration-200"
+              aria-label="npm"
+            >
+              <Package size={14} />
             </a>
           </div>
           <div className="font-mono text-[10px] text-muted-foreground tracking-widest">
@@ -1209,7 +1393,7 @@ export default function App() {
     switch (section) {
       case "product": return <ProductPage />;
       case "code": return <CodePage />;
-      case "design": return <DesignPage />;
+      case "experience": return <ExperiencePage />;
       case "architecture": return <ArchitecturePage />;
       case "career": return <CareerPage />;
       default: return <HomePage navigate={navigate} />;
@@ -1227,7 +1411,7 @@ export default function App() {
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top bar — always visible */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-background sticky top-0 z-20">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-border bg-background/95 backdrop-blur sticky top-0 z-20">
           {/* Left: hamburger (mobile) or breadcrumb (desktop) */}
           <div className="flex items-center gap-3">
             <button
