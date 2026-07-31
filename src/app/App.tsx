@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X, Github, ExternalLink, ArrowRight, Terminal, Layers, Box, Cpu, ChevronRight, Sun, Moon, Briefcase, Mail, Linkedin, Package } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -18,6 +18,34 @@ interface ThemeEntry {
   name: string;
   dark: ThemeColors;
   light: ThemeColors;
+}
+
+interface CodeRepo {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  family: string;
+  url?: string;
+}
+
+interface ProductSignal {
+  label: string;
+  value: string;
+}
+
+interface ProductWork {
+  id: string;
+  title: string;
+  period: string;
+  status: string;
+  category: string;
+  description: string;
+  tags: string[];
+  metrics: ProductSignal[];
+  accent: string;
+  suite?: string;
+  url?: string;
 }
 
 const CONTACT_EMAIL_CODES = [
@@ -236,29 +264,21 @@ function useHashRoute(): [Section, (s: Section) => void] {
 
 // ─── Content Data ────────────────────────────────────────────────────────────
 
-const CODE_REPOS = [
-  {
-    id: "shoreworks-code-strategy",
-    title: "ShoreWorks — code strategy",
-    description:
-      "The engine behind ShoreWorks (casspear.com). It's a private product, so there's no public repo — but the strategy is the point: treat architecture as executable. Layered modules with enforced dependency boundaries, typed contracts between the product tier and a stateless scan runner, dependency-cycle checks in CI, and near-total test coverage (493/493 product, 130/130 runner). Static-analysis toolchains run in an isolated worker that leases scans and never persists customer source.",
-    tags: ["Next.js", "Supabase", "Static Analysis", "Private"],
-  },
+const CODE_FAMILIES = [
+  "Embedded editing and protocols",
+  "Code health and architecture",
+  "State and content systems",
+];
+
+const CODE_REPOS: CodeRepo[] = [
   {
     id: "frame-link",
     title: "frame-link",
     description:
       "A typed, serializable protocol for iframe ↔ host communication over postMessage. Handles request/response, events, and origin validation so embedded apps and their hosts can talk safely without hand-rolling message plumbing.",
     tags: ["TypeScript", "postMessage", "iframe", "Protocol"],
+    family: "Embedded editing and protocols",
     url: "https://github.com/dcassil/frame-link",
-  },
-  {
-    id: "frame-link-react",
-    title: "frame-link-react",
-    description:
-      "React bindings for frame-link — hooks and providers that expose the typed iframe/host channel to components, keeping message wiring declarative on both sides of the frame.",
-    tags: ["TypeScript", "React", "Hooks", "iframe"],
-    url: "https://github.com/dcassil/frame-link-react",
   },
   {
     id: "stardust-iframe-adapter",
@@ -266,7 +286,17 @@ const CODE_REPOS = [
     description:
       "A typed, serializable visual-editing protocol plus iframe/host React adapters (built on frame-link). Maps editable elements inside an embedded site to host overlay controls, shipped with a runnable admin + site demo.",
     tags: ["TypeScript", "Visual Editing", "React", "CMS"],
+    family: "Embedded editing and protocols",
     url: "https://github.com/dcassil/stardust-iframe-adapter",
+  },
+  {
+    id: "frame-link-react",
+    title: "frame-link-react",
+    description:
+      "React bindings for frame-link — hooks and providers that expose the typed iframe/host channel to components, keeping message wiring declarative on both sides of the frame.",
+    tags: ["TypeScript", "React", "Hooks", "iframe"],
+    family: "Embedded editing and protocols",
+    url: "https://github.com/dcassil/frame-link-react",
   },
   {
     id: "stardust-dashboard",
@@ -274,7 +304,43 @@ const CODE_REPOS = [
     description:
       "An extensible host-dashboard boilerplate for in-iframe visual editors built on the stardust iframe adapter. Bring your own content store and block types; the dashboard supplies the editing shell.",
     tags: ["TypeScript", "Dashboard", "Boilerplate", "CMS"],
+    family: "Embedded editing and protocols",
     url: "https://github.com/dcassil/stardust-dashboard",
+  },
+  {
+    id: "ci-health-audit",
+    title: "ci-health-audit",
+    description:
+      "A deterministic 0–10 code-health score for JS/TS codebases, runnable as a CLI, a GitHub Action, or a pre-commit gate. The same static-analysis philosophy behind ShoreWorks, packaged so a build can fail on health drift instead of merging it.",
+    tags: ["TypeScript", "CI", "GitHub Action", "Static Analysis"],
+    family: "Code health and architecture",
+    url: "https://github.com/dcassil/ci-health-audit",
+  },
+  {
+    id: "code-audit",
+    title: "code-audit",
+    description:
+      "Tooling for auditing a codebase — surfacing quality and structural signals to keep both human- and agent-driven changes honest over time.",
+    tags: ["TypeScript", "Static Analysis", "Tooling"],
+    family: "Code health and architecture",
+    url: "https://github.com/dcassil/code-audit",
+  },
+  {
+    id: "cadre-architecture-docs",
+    title: "cadre-architecture-docs",
+    description:
+      "Public reference for the architecture patterns used by Cadre — the layering, boundaries, and conventions that keep services consistent and maintainable.",
+    tags: ["Architecture", "Patterns", "Docs"],
+    family: "Code health and architecture",
+    url: "https://github.com/dcassil/cadre-architecture-docs",
+  },
+  {
+    id: "shoreworks-code-strategy",
+    title: "ShoreWorks — code strategy",
+    description:
+      "The private engine behind ShoreWorks (casspear.com): layered modules with enforced dependency boundaries, typed contracts between the product tier and a stateless scan runner, dependency-cycle checks in CI, and a repository-analysis worker that leases scans without persisting customer source.",
+    tags: ["Next.js", "Supabase", "Static Analysis", "Private"],
+    family: "Code health and architecture",
   },
   {
     id: "versioned-content-engine",
@@ -282,6 +348,7 @@ const CODE_REPOS = [
     description:
       "A headless, dependency-free library for draft/live content versioning. Append-only records with deterministic materialization and corrected tombstone semantics — the versioning core, decoupled from any storage or UI.",
     tags: ["TypeScript", "Versioning", "Headless", "Data Model"],
+    family: "State and content systems",
     url: "https://github.com/dcassil/versioned-content-engine",
   },
   {
@@ -290,42 +357,25 @@ const CODE_REPOS = [
     description:
       "Client-side transactional change management: sequence edits, undo/redo, edge deduplication, superimpose changes onto a dataset, and flush as batched saves. Published to npm as sequence-transactor.",
     tags: ["TypeScript", "Undo/Redo", "State", "npm"],
+    family: "State and content systems",
     url: "https://github.com/dcassil/transactor",
-  },
-  {
-    id: "code-audit",
-    title: "code-audit",
-    description:
-      "Tooling for auditing a codebase — surfacing quality and structural signals to keep both human- and agent-driven changes honest over time.",
-    tags: ["TypeScript", "Static Analysis", "Tooling"],
-    url: "https://github.com/dcassil/code-audit",
-  },
-  {
-    id: "ci-health-audit",
-    title: "ci-health-audit",
-    description:
-      "A deterministic 0–10 code-health score for JS/TS codebases, runnable as a CLI, a GitHub Action, or a pre-commit gate. The same static-analysis philosophy behind ShoreWorks, packaged so a build can fail on health drift instead of merging it.",
-    tags: ["TypeScript", "CI", "GitHub Action", "Static Analysis"],
-    url: "https://github.com/dcassil/ci-health-audit",
-  },
-  {
-    id: "cadre-architecture-docs",
-    title: "cadre-architecture-docs",
-    description:
-      "Public reference for the architecture patterns used by Cadre — the layering, boundaries, and conventions that keep services consistent and maintainable.",
-    tags: ["Architecture", "Patterns", "Docs"],
-    url: "https://github.com/dcassil/cadre-architecture-docs",
   },
 ];
 
-const PRODUCT_WORK = [
+const PRODUCT_SUITE_DESCRIPTIONS: Record<string, string> = {
+  "ShoreWorks Software Health Suite":
+    "A connected suite for understanding software health, executing repository analysis, and keeping human and AI-driven changes aligned with project standards.",
+};
+
+const PRODUCT_WORK: ProductWork[] = [
   {
     id: "shoreworks",
     title: "ShoreWorks",
     period: "2026",
-    category: "Developer Tools · SaaS · Live",
+    status: "Live product",
+    category: "Developer Tools · SaaS",
     description:
-      "The live product face of the ShoreGuard software-health system. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
+      "The live product face of the ShoreWorks software-health suite. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
     tags: ["Next.js", "Supabase", "Code Health", "SaaS", "Founder-facing"],
     metrics: [
       { label: "Product form", value: "SaaS platform" },
@@ -333,12 +383,14 @@ const PRODUCT_WORK = [
       { label: "Outcome", value: "Makes software risk visible" },
     ],
     accent: "#00d4ff",
+    suite: "ShoreWorks Software Health Suite",
     url: "https://www.casspear.com/",
   },
   {
     id: "shore-code",
     title: "Shore Code + Shore Runner",
     period: "2026",
+    status: "Working system",
     category: "Developer Tools · SaaS",
     description:
       "The product and worker substrate behind ShoreGuard. Shore Code and Shore Runner help teams understand the condition of their codebase, track how it changes over time, and identify the areas most likely to slow development or introduce risk. The system connects securely to GitHub, analyzes repositories without retaining customer source code, and turns technical findings into clear health scores, trends, and actionable insights.",
@@ -349,11 +401,13 @@ const PRODUCT_WORK = [
       { label: "Outcome", value: "Turns repositories into actionable health signals" },
     ],
     accent: "#00d4ff",
+    suite: "ShoreWorks Software Health Suite",
   },
   {
     id: "shoreguard",
     title: "ShoreGuard",
     period: "2026",
+    status: "Working system",
     category: "Codebase Protection · AI Guardrails",
     description:
       "A codebase protection system that keeps software healthy as teams and AI agents continue building. It turns architectural standards, code-quality expectations, and project-specific rules into automated guardrails that catch drift, prevent regressions, and improve the codebase with every commit.",
@@ -361,14 +415,16 @@ const PRODUCT_WORK = [
     metrics: [
       { label: "Product form", value: "CLI + CI guardrails" },
       { label: "Audience", value: "Human and AI developers" },
-      { label: "Outcome", value: "Prevents architectural drift" },
+      { label: "Outcome", value: "Keeps changes aligned with project standards" },
     ],
     accent: "#00d4ff",
+    suite: "ShoreWorks Software Health Suite",
   },
   {
     id: "multi-tenant-code-intelligence",
     title: "Multi-Tenant Code Intelligence Platform",
     period: "2026",
+    status: "Product concept",
     category: "Enterprise SaaS · Code Intelligence",
     description:
       "An organization-wide software health platform built to evaluate codebases across multiple teams, products, and repositories. It combines automated analysis, historical trends, and shared engineering standards to help leaders identify systemic risk, compare code health across the organization, and focus improvement efforts where they will have the greatest impact.",
@@ -384,6 +440,7 @@ const PRODUCT_WORK = [
     id: "agent-workflows",
     title: "Katana + Dev Genie",
     period: "2026",
+    status: "Working system",
     category: "AI Engineering · Workflow Systems",
     description:
       "An AI engineering system that brings structure, consistency, and oversight to complex software development. It coordinates specialized agents through defined workflows, quality gates, architectural rules, and auditable decision paths — helping teams move faster without losing control of how software is designed, built, and maintained.",
@@ -399,6 +456,7 @@ const PRODUCT_WORK = [
     id: "governance-meeting-intelligence",
     title: "Governance Meeting Intelligence Platform",
     period: "2026",
+    status: "Working system",
     category: "Workflow Automation · AI Intelligence",
     description:
       "A meeting workflow system that turns recorded governance sessions into structured, usable outcomes. It captures and transcribes meetings, uses AI to identify decisions, action items, owners, deadlines, risks, and key discussion themes, then organizes the results into reviewable minutes and a searchable institutional record.",
@@ -406,7 +464,7 @@ const PRODUCT_WORK = [
     metrics: [
       { label: "Product form", value: "AI workflow platform" },
       { label: "Audience", value: "Governance councils" },
-      { label: "Outcome", value: "Turns meetings into accountable outcomes" },
+      { label: "Outcome", value: "Turns discussion into decisions and actions" },
     ],
     accent: "#22c55e",
   },
@@ -414,6 +472,7 @@ const PRODUCT_WORK = [
     id: "knack-live-builder",
     title: "Knack Live-App Builder Prototype",
     period: "2023",
+    status: "Prototype",
     category: "Product Architecture · UX Systems",
     description:
       "A live-app editing prototype that let users interact with their actual hosted app inside an iframe instead of a detached simulation. The model used postMessage, parent-side overlays, context menus, drop zones, drag handles, collaboration states, and draft/versioning concepts.",
@@ -429,6 +488,7 @@ const PRODUCT_WORK = [
     id: "frame-link-stardust",
     title: "Frame Link → Stardust Iframe Adapter",
     period: "2021",
+    status: "Open-source foundation",
     category: "Protocol · Visual Editing",
     description:
       "A typed iframe communication primitive composed into a visual-editing adapter. Frame Link handles secure host/iframe request-response messaging; Stardust maps editable elements inside an embedded site to host-side overlays, content injection, and draft/live flows.",
@@ -444,6 +504,7 @@ const PRODUCT_WORK = [
     id: "ladder-demo",
     title: "Clinical Ladder Workflow",
     period: "2026",
+    status: "Product concept",
     category: "Domain Modeling · Product Sense",
     description:
       "A focused full-stack workflow for clinical ladder submissions: nurse intent, evidence capture, requirement matching, portfolio review, and reviewer decision. It is a constrained product slice, useful because it turns an ambiguous domain into a coherent end-to-end system.",
@@ -466,6 +527,7 @@ const EXPERIENCE_WORK = [
     summary:
       "Joined as a founding team member to design and build the foundation of a growing AI/ML product suite spanning medical, banking, and bidding-platform use cases.",
     highlights: [
+      "Worked with leadership to identify product opportunities, define shared platform capabilities, and turn early commercial concepts into viable multi-tenant products.",
       "Led development across frontend, backend, and multi-tenant database architecture.",
       "Built initially on AWS, then helped guide the platform through a transition to Azure.",
       "Shaped core capabilities around identity confirmation, customer qualification, risk detection, reporting, onboarding workflow builders, customer management, inventory, and dashboard-based claim initiation.",
@@ -489,34 +551,20 @@ const EXPERIENCE_WORK = [
     tags: ["React", "Vue", "Backbone", "Product Strategy", "AI Prototypes"],
   },
   {
-    company: "Oracle NetSuite",
-    role: "Senior Software Engineer · Manager · Team Lead",
-    period: "Jan 2016 - Apr 2021",
-    location: "Oklahoma City Metropolitan Area",
-    summary:
-      "Worked across engineering leadership, product recovery, and R&D-focused architecture for enterprise eCommerce and CMS systems after the NetSuite acquisition by Oracle.",
-    highlights: [
-      "Managed a team of JavaScript engineers building and improving React-based eCommerce and website-management CMS products.",
-      "Served in an R&D role evaluating frontend frameworks, internal platform technologies, and architectural options for new product directions.",
-      "Led a stalled major redesign effort back to a viable plan by aligning architecture, design, engineering, and delivery scope.",
-      "Balanced hands-on implementation with project management, product tradeoffs, deadline negotiation, and expectation resets.",
-    ],
-    tags: ["React", "CMS", "eCommerce", "Engineering Management", "R&D"],
-  },
-  {
-    company: "NetSuite",
-    role: "Senior Software Engineer",
+    company: "NetSuite / Oracle NetSuite",
+    role: "Senior Software Engineer → Team Lead → Engineering Manager",
     period: "Mar 2013 - Apr 2021",
     location: "Oklahoma City Metropolitan Area",
     summary:
-      "Built enterprise eCommerce and content-management systems before and through NetSuite's acquisition by Oracle.",
+      "Eight-year progression across enterprise eCommerce, CMS, platform modernization, R&D, and engineering leadership through NetSuite's acquisition by Oracle.",
     highlights: [
-      "Solved complex data-architecture and code-design problems with direct impact on customer-facing UX.",
+      "Built enterprise eCommerce and content-management systems with attention to data architecture, UI architecture, and customer-facing UX.",
       "Bridged engineering and design by managing SCSS and JavaScript implementation for UI/UX-heavy product work.",
-      "Helped build enterprise software intended to feel as usable and polished as modern startup products.",
-      "Expanded from individual contributor work into cross-functional product, design, and engineering coordination.",
+      "Led JavaScript and React engineers improving eCommerce and website-management CMS products.",
+      "Evaluated frontend frameworks, internal platform technologies, and architectural options for new product directions.",
+      "Recovered a stalled major redesign by aligning architecture, design, engineering, scope, and delivery expectations.",
     ],
-    tags: ["JavaScript", "SCSS", "Webpack", "Enterprise SaaS", "UI Architecture"],
+    tags: ["React", "CMS", "eCommerce", "Engineering Leadership", "R&D"],
   },
 ];
 
@@ -991,50 +1039,73 @@ function ProductPage() {
       />
 
       <div className="flex flex-col divide-y divide-border">
-        {PRODUCT_WORK.map((work) => (
-          <article key={work.id} className="py-10 group">
-            <div className="flex flex-col sm:flex-row sm:items-start gap-6">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="font-mono text-xs text-muted-foreground tracking-widest">{work.period}</span>
-                  <span className="text-border">·</span>
-                  <span className="font-mono text-xs" style={{ color: work.accent }}>{work.category}</span>
+        {PRODUCT_WORK.map((work, index) => {
+          const showSuite = Boolean(work.suite && work.suite !== PRODUCT_WORK[index - 1]?.suite);
+
+          return (
+            <Fragment key={work.id}>
+              {showSuite && work.suite && (
+                <div className="pt-2 pb-7">
+                  <p className="font-mono text-[10px] text-primary tracking-widest uppercase mb-3">
+                    Product suite
+                  </p>
+                  <h3 className="font-mono text-xl font-semibold text-foreground leading-tight">
+                    {work.suite}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl mt-3">
+                    {PRODUCT_SUITE_DESCRIPTIONS[work.suite]}
+                  </p>
                 </div>
-                <h3 className="font-mono text-lg font-semibold text-foreground mb-4 leading-tight">{work.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mb-5">{work.description}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {work.tags.map((t) => <Tag key={t}>{t}</Tag>)}
-                </div>
-                {work.url && (
-                  <a
-                    href={work.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
-                  >
-                    View live <ArrowRight size={12} />
-                  </a>
-                )}
-              </div>
-              <div className="w-full sm:w-[220px] sm:flex-none">
-                <div className="grid grid-cols-3 sm:grid-cols-1 gap-px bg-border">
-                  {work.metrics.map((m) => (
-                    <div key={m.label} className="bg-card px-4 py-3 min-w-0">
-                      <div className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase">{m.label}</div>
-                      <div className="font-mono text-xs font-semibold leading-snug mt-1.5" style={{ color: work.accent }}>{m.value}</div>
+              )}
+              <article className="py-10 group">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-3 mb-3">
+                      <span className="font-mono text-xs text-muted-foreground tracking-widest">{work.period}</span>
+                      <span className="text-border">·</span>
+                      <span className="font-mono text-xs text-foreground tracking-widest uppercase">{work.status}</span>
+                      <span className="text-border">·</span>
+                      <span className="font-mono text-xs" style={{ color: work.accent }}>{work.category}</span>
                     </div>
-                  ))}
+                    <h3 className="font-mono text-lg font-semibold text-foreground mb-4 leading-tight">{work.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mb-5">{work.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {work.tags.slice(0, 3).map((t) => <Tag key={t}>{t}</Tag>)}
+                    </div>
+                    {work.url && (
+                      <a
+                        href={work.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
+                      >
+                        View live <ArrowRight size={12} />
+                      </a>
+                    )}
+                  </div>
+                  <div className="w-full sm:w-[220px] sm:flex-none">
+                    <div className="grid grid-cols-3 sm:grid-cols-1 gap-px bg-border">
+                      {work.metrics.map((m) => (
+                        <div key={m.label} className="bg-card px-4 py-3 min-w-0">
+                          <div className="font-mono text-[10px] text-muted-foreground tracking-wider uppercase">{m.label}</div>
+                          <div className="font-mono text-xs font-semibold leading-snug mt-1.5" style={{ color: work.accent }}>{m.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </article>
-        ))}
+              </article>
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 function CodePage() {
+  let repoIndex = 0;
+
   return (
     <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
       <PageHeader
@@ -1043,45 +1114,59 @@ function CodePage() {
         description="A closer look at how I design and build software: public libraries, private product systems, and the architectural patterns behind them. The work spans typed protocols, visual tooling, code health, agent workflows, and systems designed to remain clear, testable, and dependable as they grow."
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        {CODE_REPOS.map((repo, i) => {
-          const inner = (
-            <>
-              <div className="flex items-center gap-3 mb-4 min-w-0">
-                <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                {repo.url ? (
-                  <Github size={14} className="text-muted-foreground flex-shrink-0" />
-                ) : (
-                  <Cpu size={14} className="text-muted-foreground flex-shrink-0" />
-                )}
-                <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide truncate">{repo.title}</h3>
-                {repo.url ? (
-                  <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
-                ) : (
-                  <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase ml-auto flex-shrink-0">Private</span>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
-              </div>
-            </>
-          );
+      <div className="space-y-9">
+        {CODE_FAMILIES.map((family) => {
+          const repos = CODE_REPOS.filter((repo) => repo.family === family);
 
-          return repo.url ? (
-            <a
-              key={repo.id}
-              href={repo.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-col bg-card border border-border p-5 transition-all hover:bg-muted/40 hover:border-primary/40"
-            >
-              {inner}
-            </a>
-          ) : (
-            <div key={repo.id} className="group flex flex-col bg-card border border-border p-5">
-              {inner}
-            </div>
+          return (
+            <section key={family}>
+              <h3 className="font-mono text-xs font-semibold text-foreground tracking-widest uppercase mb-3">
+                {family}
+              </h3>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                {repos.map((repo) => {
+                  repoIndex += 1;
+                  const inner = (
+                    <>
+                      <div className="flex items-center gap-3 mb-4 min-w-0">
+                        <span className="font-mono text-xs text-muted-foreground">{String(repoIndex).padStart(2, "0")}</span>
+                        {repo.url ? (
+                          <Github size={14} className="text-muted-foreground flex-shrink-0" />
+                        ) : (
+                          <Cpu size={14} className="text-muted-foreground flex-shrink-0" />
+                        )}
+                        <h3 className="font-mono text-sm font-semibold text-foreground tracking-wide truncate">{repo.title}</h3>
+                        {repo.url ? (
+                          <ExternalLink size={13} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity ml-auto flex-shrink-0" />
+                        ) : (
+                          <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase ml-auto flex-shrink-0">Private</span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+                      </div>
+                    </>
+                  );
+
+                  return repo.url ? (
+                    <a
+                      key={repo.id}
+                      href={repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex flex-col bg-card border border-border p-5 transition-all hover:bg-muted/40 hover:border-primary/40"
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div key={repo.id} className="group flex flex-col bg-card border border-border p-5">
+                      {inner}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
           );
         })}
       </div>
@@ -1312,6 +1397,13 @@ function Sidebar({
 
         {/* Footer */}
         <div className="px-4 pb-6 pt-4 border-t border-sidebar-border">
+          <button
+            type="button"
+            onClick={openContactEmail}
+            className="w-full mb-4 border border-sidebar-border bg-sidebar-accent/40 px-3 py-2 text-left font-mono text-[10px] uppercase tracking-widest text-foreground hover:border-primary/50 hover:text-primary transition-colors duration-200"
+          >
+            Talk product / engineering
+          </button>
           <div className="flex gap-3 mb-4">
             <button
               type="button"
