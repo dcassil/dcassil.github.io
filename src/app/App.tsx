@@ -274,7 +274,7 @@ const CODE_REPOS: CodeRepo[] = [
     id: "straight-jacket",
     title: "Straight Jacket",
     description:
-      "A CLI, read-only MCP server, and agent skill for human-protected repo files. The model covers protected paths, authorization flow, CI/pre-commit enforcement, and threat-model decisions without giving agents a bypass path.",
+      "Straight Jacket is a repo-native protection layer for files that AI should never be able to change without human approval. Teams can lock sensitive files, and Straight Jacket records a checksum for each one. If an agent modifies a protected file, commits and pull requests fail validation until a human explicitly approves the change.\n\nA simple example is an ESLint config. If an agent repeatedly hits a lint rule it cannot satisfy, it may decide the rule is the problem and modify the config instead. Straight Jacket makes that impossible to ship without a human approving it.\n\nThere is no remote service or external control plane. Team access is handled inside the repository through a shared master credential that lets each human register a local user, while approval remains local and human-controlled.",
     tags: ["MCP", "CLI", "Protected Files", "CI"],
     family: "Featured code",
     url: "https://github.com/dcassil/straight-jacket",
@@ -349,7 +349,7 @@ const PRODUCT_WORK: ProductWork[] = [
     status: "Working system",
     category: "AI Safety · Repository Protection",
     description:
-      "A protection layer for human-owned repository files. Straight Jacket lets a project mark sensitive paths, gives agents a read-only way to verify protected state, and routes protected-file changes through explicit human authorization instead of trusting prompt discipline.",
+      "Straight Jacket is a repo-native protection layer for files that AI should never be able to change without human approval. Teams can lock sensitive files, and Straight Jacket records a checksum for each one. If an agent modifies a protected file, commits and pull requests fail validation until a human explicitly approves the change.\n\nA simple example is an ESLint config. If an agent repeatedly hits a lint rule it cannot satisfy, it may decide the rule is the problem and modify the config instead. Straight Jacket makes that impossible to ship without a human approving it.\n\nThere is no remote service or external control plane. Team access is handled inside the repository through a shared master credential that lets each human register a local user, while approval remains local and human-controlled.",
     tags: ["MCP", "CLI", "Agent Safety", "Protected Files"],
     metrics: [
       { label: "Product form", value: "CLI + MCP + plugin" },
@@ -810,6 +810,24 @@ function PageHeader({
   );
 }
 
+function DescriptionText({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}) {
+  return (
+    <>
+      {text.split("\n\n").map((paragraph, index) => (
+        <p key={paragraph} className={`${className} ${index > 0 ? "mt-3" : ""}`}>
+          {paragraph}
+        </p>
+      ))}
+    </>
+  );
+}
+
 function NavItem({
   label,
   section,
@@ -973,7 +991,9 @@ function ProductPage() {
                       <span className="font-mono text-xs" style={{ color: work.accent }}>{work.category}</span>
                     </div>
                     <h3 className="font-mono text-lg font-semibold text-foreground mb-4 leading-tight">{work.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mb-5">{work.description}</p>
+                    <div className="mb-5">
+                      <DescriptionText text={work.description} className="text-sm text-muted-foreground leading-relaxed max-w-xl" />
+                    </div>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {work.tags.slice(0, 3).map((t) => <Tag key={t}>{t}</Tag>)}
                     </div>
@@ -1047,7 +1067,9 @@ function CodePage() {
                           <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase ml-auto flex-shrink-0">Private</span>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed mb-4 flex-1">{repo.description}</p>
+                      <div className="mb-4 flex-1">
+                        <DescriptionText text={repo.description} className="text-xs text-muted-foreground leading-relaxed" />
+                      </div>
                       <div className="flex flex-wrap gap-2">
                         {repo.tags.map((t) => <Tag key={t}>{t}</Tag>)}
                       </div>
