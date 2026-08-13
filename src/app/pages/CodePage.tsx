@@ -1,4 +1,4 @@
-import { Github, ExternalLink, Cpu } from "lucide-react";
+import { GitBranch, ExternalLink, Cpu } from "lucide-react";
 import { PageHeader } from "../components/shared/PageHeader";
 import { Tag } from "../components/shared/Tag";
 import { CODE_FAMILIES, CODE_REPOS } from "../data/code-repos";
@@ -42,7 +42,7 @@ export function CodePage() {
                       <div className="flex items-center gap-3 mb-4 min-w-0">
                         <span className="font-mono text-xs text-muted-foreground">{String(repoIndexMap.get(repo.id)).padStart(2, "0")}</span>
                         {repo.url ? (
-                          <Github size={14} className="text-muted-foreground flex-shrink-0" />
+                          <GitBranch size={14} className="text-muted-foreground flex-shrink-0" />
                         ) : (
                           <Cpu size={14} className="text-muted-foreground flex-shrink-0" />
                         )}
