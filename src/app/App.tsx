@@ -266,6 +266,7 @@ function useHashRoute(): [Section, (s: Section) => void] {
 
 const CODE_FAMILIES = [
   "Embedded editing and protocols",
+  "Agent systems and guardrails",
   "Code health and architecture",
   "State and content systems",
 ];
@@ -299,13 +300,22 @@ const CODE_REPOS: CodeRepo[] = [
     url: "https://github.com/dcassil/frame-link-react",
   },
   {
-    id: "stardust-dashboard",
-    title: "stardust-dashboard",
+    id: "agent-kit",
+    title: "agent-kit",
     description:
-      "An extensible host-dashboard boilerplate for in-iframe visual editors built on the stardust iframe adapter. Bring your own content store and block types; the dashboard supplies the editing shell.",
-    tags: ["TypeScript", "Dashboard", "Boilerplate", "CMS"],
-    family: "Embedded editing and protocols",
-    url: "https://github.com/dcassil/stardust-dashboard",
+      "Reusable agent skills, workflow templates, and plugin hooks shared across repos. Packages Jira decomposition flows, teamwork orchestration, and repo-aware lint feedback into a single kit for more consistent agent-assisted development.",
+    tags: ["Agent Skills", "Plugins", "Workflow", "Jira"],
+    family: "Agent systems and guardrails",
+    url: "https://github.com/dcassil/agent-kit",
+  },
+  {
+    id: "straight-jacket",
+    title: "straight-jacket",
+    description:
+      "A CLI, read-only MCP server, and agent skill for human-protected repo files. It marks files that require authorization, verifies protected state, and avoids bypass paths, secret capture, or private-key export.",
+    tags: ["MCP", "CLI", "Protected Files", "Security"],
+    family: "Agent systems and guardrails",
+    url: "https://github.com/dcassil/straight-jacket",
   },
   {
     id: "ci-health-audit",
@@ -324,15 +334,6 @@ const CODE_REPOS: CodeRepo[] = [
     tags: ["TypeScript", "Static Analysis", "Tooling"],
     family: "Code health and architecture",
     url: "https://github.com/dcassil/code-audit",
-  },
-  {
-    id: "cadre-architecture-docs",
-    title: "cadre-architecture-docs",
-    description:
-      "Public reference for the architecture patterns used by Cadre — the layering, boundaries, and conventions that keep services consistent and maintainable.",
-    tags: ["Architecture", "Patterns", "Docs"],
-    family: "Code health and architecture",
-    url: "https://github.com/dcassil/cadre-architecture-docs",
   },
   {
     id: "shoreworks-code-strategy",
@@ -365,6 +366,8 @@ const CODE_REPOS: CodeRepo[] = [
 const PRODUCT_SUITE_DESCRIPTIONS: Record<string, string> = {
   "ShoreWorks Software Health Suite":
     "A connected suite for understanding software health, executing repository analysis, and keeping human and AI-driven changes aligned with project standards.",
+  "Agent Workflow + Guardrail Systems":
+    "A set of tools for making AI-assisted engineering more deliberate: reusable agent procedures, structured execution paths, and enforceable boundaries around sensitive repository changes.",
 };
 
 const PRODUCT_WORK: ProductWork[] = [
@@ -451,6 +454,25 @@ const PRODUCT_WORK: ProductWork[] = [
       { label: "Outcome", value: "Adds structure and oversight to agent development" },
     ],
     accent: "#ff6b35",
+    suite: "Agent Workflow + Guardrail Systems",
+  },
+  {
+    id: "straight-jacket",
+    title: "Straight Jacket",
+    period: "2026",
+    status: "Working system",
+    category: "AI Safety · Repository Protection",
+    description:
+      "A protection layer for human-owned repository files. Straight Jacket lets a project mark sensitive paths, gives agents a read-only way to verify protected state, and routes protected-file changes back through explicit human authorization instead of trusting prompt discipline.",
+    tags: ["MCP", "CLI", "Agent Safety", "Protected Files"],
+    metrics: [
+      { label: "Product form", value: "CLI + MCP + plugin" },
+      { label: "Audience", value: "Teams using coding agents" },
+      { label: "Outcome", value: "Keeps sensitive files human-authorized" },
+    ],
+    accent: "#ff6b35",
+    suite: "Agent Workflow + Guardrail Systems",
+    url: "https://github.com/dcassil/straight-jacket",
   },
   {
     id: "governance-meeting-intelligence",
@@ -607,20 +629,20 @@ const ARCH_DOC = `# Architecture As An Enforced System
 
 ## Overview
 
-The strongest thread across my work is turning architecture from prose into working constraints: small primitives, typed contracts, dependency boundaries, tests, review gates, and product workflows that make the intended system easier to keep than to accidentally erode.
+I am a user first, an engineer second, and a designer 3rd.  Wether I am writing code, designing a database, or planning a product, I always start by looking at it from a users perspective.  What does the user need, what do they feel, what is important and not to them.  I love beautiful systems and code, I also love efficency and building what is needed, in a way that allows us to pivot and expand, without fixiating on perfect, when 90% of perfect in 50% of the time is probably the sweet spot.  I love/hate AI.  I love that I can write 20k lines of near perfect code in  day, I hate that I do not write code so much as plan/design, and carry a big stick to keep AI inline.  Lately that has been my passion, building the tools and workflows to ensure that AI writes perfect code all the time.
 
 ---
 
 ## Core Principles
 
-**Build a primitive, then compose it**
-Frame Link is the small typed transport. Stardust Iframe Adapter composes that transport into visual editing. The separation keeps the communication layer reusable instead of burying it inside a product.
+**Start with the user**
+Whether I am writing code, designing a database, or planning a product, I start by looking at the system from the user's perspective: what they need, what they feel, what matters to them, and what does not. Product judgment comes before implementation detail.
 
-**Make boundaries executable**
-Shore Code and Shore Runner use layered modules, contract types, tests, and dependency-cycle checks so architecture is continuously visible. The point is not a diagram; the point is a codebase that resists becoming ambiguous.
+**Build for useful, not perfect**
+I care about beautiful systems, clean code, and efficient execution, but I do not believe perfection is the goal. The sweet spot is often getting 90% of perfect in 50% of the time, with enough structure to pivot, expand, and keep moving without overbuilding.
 
-**Constrain AI-assisted work**
-Dev Genie and Katana explore repo-native workflows where agents operate inside gates: phases, schemas, architecture-impact artifacts, validation reports, and guardrails. AI output improves when the environment enforces architecture instead of merely describing it.
+**Make AI work inside guardrails**
+AI can produce an enormous amount of useful code quickly, but it needs strong planning, clear design, and firm enforcement. My recent focus is building the tools, workflows, and validation gates that keep AI-generated work aligned with the product, the architecture, and the user's needs.
 
 ---
 
