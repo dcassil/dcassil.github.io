@@ -1,128 +1,15 @@
 import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X, Github, ExternalLink, ArrowRight, Terminal, Layers, Box, Cpu, ChevronRight, Sun, Moon, Briefcase, Mail, Linkedin, Package } from "lucide-react";
-import type { Section, ThemeMode, ThemeColors } from "./types";
+import type { Section, ThemeMode } from "./types";
 import { THEMES } from "./data/themes";
 import { openContactEmail } from "./data/contact";
+import { useTheme } from "./hooks/useTheme";
+import { useHashRoute } from "./hooks/useHashRoute";
 import { CODE_FAMILIES, CODE_REPOS } from "./data/code-repos";
 import { PRODUCT_SUITE_DESCRIPTIONS, PRODUCT_WORK } from "./data/product-work";
 import { EXPERIENCE_WORK } from "./data/experience";
 import { CAREER_QUOTES } from "./data/career-quotes";
 import { ARCH_DOC } from "./data/architecture-doc";
-
-// ─── Color Utilities ──────────────────────────────────────────────────────────
-
-function hexToRgb(hex: string): [number, number, number] {
-  const h = hex.replace("#", "");
-  return [
-    parseInt(h.slice(0, 2), 16),
-    parseInt(h.slice(2, 4), 16),
-    parseInt(h.slice(4, 6), 16),
-  ];
-}
-
-function relativeLuminance(hex: string): number {
-  const [r, g, b] = hexToRgb(hex).map((c) => {
-    const s = c / 255;
-    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-function readableOn(bg: string, light: string, dark: string): string {
-  const bgL = relativeLuminance(bg);
-  const lightContrast = (Math.max(relativeLuminance(light), bgL) + 0.05) /
-    (Math.min(relativeLuminance(light), bgL) + 0.05);
-  const darkContrast = (Math.max(relativeLuminance(dark), bgL) + 0.05) /
-    (Math.min(relativeLuminance(dark), bgL) + 0.05);
-  return lightContrast >= darkContrast ? light : dark;
-}
-
-function hexAlpha(hex: string, alpha: number): string {
-  const [r, g, b] = hexToRgb(hex);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-function applyTheme(c: ThemeColors) {
-  const root = document.documentElement;
-  const onContrast = readableOn(c.contrast, c.primaryFt, c.primaryBg);
-  const [fr, fg, fb] = hexToRgb(c.primaryFt);
-  const vars: Record<string, string> = {
-    "--background":            c.primaryBg,
-    "--foreground":            c.primaryFt,
-    "--card":                  c.secondaryBg,
-    "--card-foreground":       c.primaryFt,
-    "--popover":               c.secondaryBg,
-    "--popover-foreground":    c.primaryFt,
-    "--primary":               c.contrast,
-    "--primary-foreground":    onContrast,
-    "--secondary":             c.secondaryBg,
-    "--secondary-foreground":  c.primaryFt,
-    "--muted":                 c.secondaryBg,
-    "--muted-foreground":      c.secondaryFt,
-    "--accent":                c.contrast,
-    "--accent-foreground":     onContrast,
-    "--border":                `rgba(${fr},${fg},${fb},0.16)`,
-    "--ring":                  c.contrast,
-    "--input":                 c.secondaryBg,
-    "--input-background":      c.secondaryBg,
-    "--switch-background":     hexAlpha(c.secondaryFt, 0.4),
-    "--sidebar":               c.primaryBg,
-    "--sidebar-foreground":    c.primaryFt,
-    "--sidebar-primary":       c.contrast,
-    "--sidebar-primary-foreground": onContrast,
-    "--sidebar-accent":        c.secondaryBg,
-    "--sidebar-accent-foreground": c.primaryFt,
-    "--sidebar-border":        `rgba(${fr},${fg},${fb},0.1)`,
-    "--sidebar-ring":          c.contrast,
-  };
-  Object.entries(vars).forEach(([k, v]) => root.style.setProperty(k, v));
-}
-
-// ─── Theme Hook ───────────────────────────────────────────────────────────────
-
-function useTheme() {
-  const getSystemMode = (): ThemeMode =>
-    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-
-  const [themeName, setThemeNameState] = useState<string>(() =>
-    localStorage.getItem("portfolio-theme") || THEMES[0].name
-  );
-  const [modeOverride, setModeOverride] = useState<ThemeMode | "system">(() =>
-    (localStorage.getItem("portfolio-mode") as ThemeMode | "system") || "system"
-  );
-
-  const activeMode: ThemeMode =
-    modeOverride === "system" ? getSystemMode() : modeOverride;
-
-  useEffect(() => {
-    const theme = THEMES.find((t) => t.name === themeName) || THEMES[0];
-    applyTheme(activeMode === "dark" ? theme.dark : theme.light);
-  }, [themeName, activeMode]);
-
-  useEffect(() => {
-    if (modeOverride !== "system") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = () => {
-      const theme = THEMES.find((t) => t.name === themeName) || THEMES[0];
-      applyTheme(mq.matches ? theme.dark : theme.light);
-    };
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, [themeName, modeOverride]);
-
-  const setThemeName = (name: string) => {
-    localStorage.setItem("portfolio-theme", name);
-    setThemeNameState(name);
-  };
-
-  const toggleMode = () => {
-    const next: ThemeMode = activeMode === "dark" ? "light" : "dark";
-    localStorage.setItem("portfolio-mode", next);
-    setModeOverride(next);
-  };
-
-  return { themeName, setThemeName, activeMode, toggleMode };
-}
 
 // ─── Theme Controls ───────────────────────────────────────────────────────────
 
@@ -158,27 +45,6 @@ function ThemeControls({
       </select>
     </div>
   );
-}
-
-// ─── Hash Router ─────────────────────────────────────────────────────────────
-
-function useHashRoute(): [Section, (s: Section) => void] {
-  const getSection = (): Section => {
-    const hash = window.location.hash.replace("#/", "").replace("#", "") as Section;
-    const valid: Section[] = ["product", "code", "experience", "architecture", "career"];
-    return valid.includes(hash) ? hash : "home";
-  };
-  const [section, setSection] = useState<Section>(getSection);
-  useEffect(() => {
-    const handler = () => setSection(getSection());
-    window.addEventListener("hashchange", handler);
-    return () => window.removeEventListener("hashchange", handler);
-  }, []);
-  const navigate = (s: Section) => {
-    window.location.hash = s === "home" ? "" : s;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-  return [section, navigate];
 }
 
 // ─── Markdown Renderer ───────────────────────────────────────────────────────
