@@ -16,7 +16,7 @@ function DescriptionText({ text, className }: { text: string; className: string 
 }
 
 export function CodePage() {
-  let repoIndex = 0;
+  const repoIndexMap = new Map(CODE_REPOS.map((repo, i) => [repo.id, i + 1]));
 
   return (
     <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
@@ -37,11 +37,10 @@ export function CodePage() {
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                 {repos.map((repo) => {
-                  repoIndex += 1;
                   const inner = (
                     <>
                       <div className="flex items-center gap-3 mb-4 min-w-0">
-                        <span className="font-mono text-xs text-muted-foreground">{String(repoIndex).padStart(2, "0")}</span>
+                        <span className="font-mono text-xs text-muted-foreground">{String(repoIndexMap.get(repo.id)).padStart(2, "0")}</span>
                         {repo.url ? (
                           <Github size={14} className="text-muted-foreground flex-shrink-0" />
                         ) : (
