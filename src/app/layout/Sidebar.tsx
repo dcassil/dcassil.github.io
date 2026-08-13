@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { X, Terminal, Layers, Box, Cpu, Briefcase, Mail, GitBranch, Link, Package } from "lucide-react";
+import { X, Terminal, Layers, Box, Cpu, Briefcase, Mail, Github, Linkedin, Package } from "lucide-react";
 import type { Section } from "../types";
 import { openContactEmail } from "../data/contact";
 import { NavItem } from "./NavItem";
@@ -74,7 +74,6 @@ export function Sidebar({
             <NavItem
               key={item.id}
               label={item.label}
-              section={item.id}
               icon={item.icon}
               active={section === item.id}
               onClick={() => { handleNav(item.id); }}
@@ -107,7 +106,7 @@ export function Sidebar({
               className="text-muted-foreground hover:text-foreground transition-colors duration-200"
               aria-label="GitHub"
             >
-              <GitBranch size={14} />
+              <Github size={14} />
             </a>
             <a
               href="https://www.linkedin.com/in/daniel-cassil-3761595/"
@@ -116,7 +115,7 @@ export function Sidebar({
               className="text-muted-foreground hover:text-foreground transition-colors duration-200"
               aria-label="LinkedIn"
             >
-              <Link size={14} />
+              <Linkedin size={14} />
             </a>
             <a
               href="https://www.npmjs.com/~dpcassil01"

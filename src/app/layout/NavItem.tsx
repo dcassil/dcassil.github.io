@@ -1,5 +1,4 @@
 import { ChevronRight } from "lucide-react";
-import type { Section } from "../types";
 
 export function NavItem({
   label,
@@ -8,7 +7,6 @@ export function NavItem({
   onClick,
 }: {
   label: string;
-  section: Section;
   icon: React.ReactNode;
   active: boolean;
   onClick: () => void;
