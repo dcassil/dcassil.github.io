@@ -10,7 +10,7 @@ import globals from 'globals';
 export default tseslint.config(
   // Global ignores
   {
-    ignores: ['dist/', 'node_modules/', '**/*.config.{js,mjs,cjs}'],
+    ignores: ['dist/', 'node_modules/', '.claude/', '**/*.config.{js,mjs,cjs}'],
   },
 
   // Base JS + strict type-aware TS presets
