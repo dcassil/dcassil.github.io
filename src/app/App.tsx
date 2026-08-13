@@ -265,83 +265,37 @@ function useHashRoute(): [Section, (s: Section) => void] {
 // ─── Content Data ────────────────────────────────────────────────────────────
 
 const CODE_FAMILIES = [
-  "Embedded editing and protocols",
-  "Agent systems and guardrails",
-  "Code health and architecture",
-  "State and content systems",
+  "Featured code",
+  "Supporting repos",
 ];
 
 const CODE_REPOS: CodeRepo[] = [
   {
-    id: "frame-link",
-    title: "frame-link",
-    description:
-      "A typed, serializable protocol for iframe ↔ host communication over postMessage. Handles request/response, events, and origin validation so embedded apps and their hosts can talk safely without hand-rolling message plumbing.",
-    tags: ["TypeScript", "postMessage", "iframe", "Protocol"],
-    family: "Embedded editing and protocols",
-    url: "https://github.com/dcassil/frame-link",
-  },
-  {
-    id: "stardust-iframe-adapter",
-    title: "stardust-iframe-adapter",
-    description:
-      "A typed, serializable visual-editing protocol plus iframe/host React adapters (built on frame-link). Maps editable elements inside an embedded site to host overlay controls, shipped with a runnable admin + site demo.",
-    tags: ["TypeScript", "Visual Editing", "React", "CMS"],
-    family: "Embedded editing and protocols",
-    url: "https://github.com/dcassil/stardust-iframe-adapter",
-  },
-  {
-    id: "frame-link-react",
-    title: "frame-link-react",
-    description:
-      "React bindings for frame-link — hooks and providers that expose the typed iframe/host channel to components, keeping message wiring declarative on both sides of the frame.",
-    tags: ["TypeScript", "React", "Hooks", "iframe"],
-    family: "Embedded editing and protocols",
-    url: "https://github.com/dcassil/frame-link-react",
-  },
-  {
-    id: "agent-kit",
-    title: "agent-kit",
-    description:
-      "Reusable agent skills, workflow templates, and plugin hooks shared across repos. Packages Jira decomposition flows, teamwork orchestration, and repo-aware lint feedback into a single kit for more consistent agent-assisted development.",
-    tags: ["Agent Skills", "Plugins", "Workflow", "Jira"],
-    family: "Agent systems and guardrails",
-    url: "https://github.com/dcassil/agent-kit",
-  },
-  {
     id: "straight-jacket",
-    title: "straight-jacket",
+    title: "Straight Jacket",
     description:
-      "A CLI, read-only MCP server, and agent skill for human-protected repo files. It marks files that require authorization, verifies protected state, and avoids bypass paths, secret capture, or private-key export.",
-    tags: ["MCP", "CLI", "Protected Files", "Security"],
-    family: "Agent systems and guardrails",
+      "A CLI, read-only MCP server, and agent skill for human-protected repo files. The model covers protected paths, authorization flow, CI/pre-commit enforcement, and threat-model decisions without giving agents a bypass path.",
+    tags: ["MCP", "CLI", "Protected Files", "CI"],
+    family: "Featured code",
     url: "https://github.com/dcassil/straight-jacket",
   },
   {
+    id: "frame-link-stardust-code",
+    title: "Frame Link / Stardust",
+    description:
+      "Typed iframe request/response protocol, origin validation, React integration, runnable examples, and a visual-editing adapter composed on top of a small transport primitive.",
+    tags: ["TypeScript", "Protocol", "React", "Browser Security"],
+    family: "Featured code",
+    url: "https://github.com/dcassil/frame-link",
+  },
+  {
     id: "ci-health-audit",
-    title: "ci-health-audit",
+    title: "CI Health Audit",
     description:
-      "A deterministic 0–10 code-health score for JS/TS codebases, runnable as a CLI, a GitHub Action, or a pre-commit gate. The same static-analysis philosophy behind ShoreWorks, packaged so a build can fail on health drift instead of merging it.",
-    tags: ["TypeScript", "CI", "GitHub Action", "Static Analysis"],
-    family: "Code health and architecture",
+      "A deterministic code-health score for JS/TS codebases, runnable as a CLI, GitHub Action, or pre-commit gate. It reinforces the architecture thesis with analyzers, failure thresholds, and actionable output.",
+    tags: ["TypeScript", "GitHub Action", "Pre-commit", "Static Analysis"],
+    family: "Featured code",
     url: "https://github.com/dcassil/ci-health-audit",
-  },
-  {
-    id: "code-audit",
-    title: "code-audit",
-    description:
-      "Tooling for auditing a codebase — surfacing quality and structural signals to keep both human- and agent-driven changes honest over time.",
-    tags: ["TypeScript", "Static Analysis", "Tooling"],
-    family: "Code health and architecture",
-    url: "https://github.com/dcassil/code-audit",
-  },
-  {
-    id: "shoreworks-code-strategy",
-    title: "ShoreWorks — code strategy",
-    description:
-      "The private engine behind ShoreWorks (casspear.com): layered modules with enforced dependency boundaries, typed contracts between the product tier and a stateless scan runner, dependency-cycle checks in CI, and a repository-analysis worker that leases scans without persisting customer source.",
-    tags: ["Next.js", "Supabase", "Static Analysis", "Private"],
-    family: "Code health and architecture",
   },
   {
     id: "versioned-content-engine",
@@ -349,7 +303,7 @@ const CODE_REPOS: CodeRepo[] = [
     description:
       "A headless, dependency-free library for draft/live content versioning. Append-only records with deterministic materialization and corrected tombstone semantics — the versioning core, decoupled from any storage or UI.",
     tags: ["TypeScript", "Versioning", "Headless", "Data Model"],
-    family: "State and content systems",
+    family: "Supporting repos",
     url: "https://github.com/dcassil/versioned-content-engine",
   },
   {
@@ -358,7 +312,7 @@ const CODE_REPOS: CodeRepo[] = [
     description:
       "Client-side transactional change management: sequence edits, undo/redo, edge deduplication, superimpose changes onto a dataset, and flush as batched saves. Published to npm as sequence-transactor.",
     tags: ["TypeScript", "Undo/Redo", "State", "npm"],
-    family: "State and content systems",
+    family: "Supporting repos",
     url: "https://github.com/dcassil/transactor",
   },
 ];
@@ -378,83 +332,15 @@ const PRODUCT_WORK: ProductWork[] = [
     status: "Live product",
     category: "Developer Tools · SaaS",
     description:
-      "The live product face of the ShoreWorks software-health suite. ShoreWorks watches a repository and translates raw engineering signals into the numbers a founder actually tracks — development cost, delivery speed, bug risk, security exposure, and maintainability. Built for teams shipping AI-assisted software who need to know whether their foundation is quietly degrading. It scores health over time and analyzes repos without retaining source or training on it.",
-    tags: ["Next.js", "Supabase", "Code Health", "SaaS", "Founder-facing"],
+      "Founder-facing SaaS for understanding whether a codebase is becoming easier or harder to build on. ShoreWorks connects to GitHub, analyzes repositories through the Shore Code product layer and Shore Runner worker, translates engineering signals into business language, and folds ShoreGuard-style thresholds into the product story instead of presenting guardrails as a separate tool.",
+    tags: ["Next.js", "Supabase", "GitHub", "Code Health", "SaaS"],
     metrics: [
-      { label: "Product form", value: "SaaS platform" },
-      { label: "Audience", value: "Founders and product teams" },
-      { label: "Outcome", value: "Makes software risk visible" },
+      { label: "Product form", value: "Founder-facing SaaS" },
+      { label: "Architecture", value: "Product + stateless runner" },
+      { label: "Outcome", value: "Turns code health into business risk" },
     ],
     accent: "#00d4ff",
-    suite: "ShoreWorks Software Health Suite",
     url: "https://www.casspear.com/",
-  },
-  {
-    id: "shore-code",
-    title: "Shore Code + Shore Runner",
-    period: "2026",
-    status: "Working system",
-    category: "Developer Tools · SaaS",
-    description:
-      "The product and worker substrate behind ShoreGuard. Shore Code and Shore Runner help teams understand the condition of their codebase, track how it changes over time, and identify the areas most likely to slow development or introduce risk. The system connects securely to GitHub, analyzes repositories without retaining customer source code, and turns technical findings into clear health scores, trends, and actionable insights.",
-    tags: ["Next.js", "Supabase", "GitHub App", "Workers", "Static Analysis"],
-    metrics: [
-      { label: "Product form", value: "Analysis platform + worker system" },
-      { label: "Audience", value: "Software teams" },
-      { label: "Outcome", value: "Turns repositories into actionable health signals" },
-    ],
-    accent: "#00d4ff",
-    suite: "ShoreWorks Software Health Suite",
-  },
-  {
-    id: "shoreguard",
-    title: "ShoreGuard",
-    period: "2026",
-    status: "Working system",
-    category: "Codebase Protection · AI Guardrails",
-    description:
-      "A codebase protection system that keeps software healthy as teams and AI agents continue building. It turns architectural standards, code-quality expectations, and project-specific rules into automated guardrails that catch drift, prevent regressions, and improve the codebase with every commit.",
-    tags: ["Code Health", "Architecture Guardrails", "AI Development", "CI"],
-    metrics: [
-      { label: "Product form", value: "CLI + CI guardrails" },
-      { label: "Audience", value: "Human and AI developers" },
-      { label: "Outcome", value: "Keeps changes aligned with project standards" },
-    ],
-    accent: "#00d4ff",
-    suite: "ShoreWorks Software Health Suite",
-  },
-  {
-    id: "multi-tenant-code-intelligence",
-    title: "Multi-Tenant Code Intelligence Platform",
-    period: "2026",
-    status: "Product concept",
-    category: "Enterprise SaaS · Code Intelligence",
-    description:
-      "An organization-wide software health platform built to evaluate codebases across multiple teams, products, and repositories. It combines automated analysis, historical trends, and shared engineering standards to help leaders identify systemic risk, compare code health across the organization, and focus improvement efforts where they will have the greatest impact.",
-    tags: ["Multi-Tenant SaaS", "Code Health", "Engineering Standards", "Analytics"],
-    metrics: [
-      { label: "Product form", value: "Enterprise SaaS" },
-      { label: "Scope", value: "Multi-team organizations" },
-      { label: "Outcome", value: "Prioritizes systemic engineering risk" },
-    ],
-    accent: "#00d4ff",
-  },
-  {
-    id: "agent-workflows",
-    title: "Katana + Dev Genie",
-    period: "2026",
-    status: "Working system",
-    category: "AI Engineering · Workflow Systems",
-    description:
-      "An AI engineering system that brings structure, consistency, and oversight to complex software development. It coordinates specialized agents through defined workflows, quality gates, architectural rules, and auditable decision paths — helping teams move faster without losing control of how software is designed, built, and maintained.",
-    tags: ["MCP", "CLI", "Protocol Schemas", "Guardrails", "TypeScript"],
-    metrics: [
-      { label: "Product form", value: "CLI + plugins + agent workflows" },
-      { label: "Audience", value: "AI-assisted engineering teams" },
-      { label: "Outcome", value: "Adds structure and oversight to agent development" },
-    ],
-    accent: "#ff6b35",
-    suite: "Agent Workflow + Guardrail Systems",
   },
   {
     id: "straight-jacket",
@@ -463,7 +349,7 @@ const PRODUCT_WORK: ProductWork[] = [
     status: "Working system",
     category: "AI Safety · Repository Protection",
     description:
-      "A protection layer for human-owned repository files. Straight Jacket lets a project mark sensitive paths, gives agents a read-only way to verify protected state, and routes protected-file changes back through explicit human authorization instead of trusting prompt discipline.",
+      "A protection layer for human-owned repository files. Straight Jacket lets a project mark sensitive paths, gives agents a read-only way to verify protected state, and routes protected-file changes through explicit human authorization instead of trusting prompt discipline.",
     tags: ["MCP", "CLI", "Agent Safety", "Protected Files"],
     metrics: [
       { label: "Product form", value: "CLI + MCP + plugin" },
@@ -471,24 +357,7 @@ const PRODUCT_WORK: ProductWork[] = [
       { label: "Outcome", value: "Keeps sensitive files human-authorized" },
     ],
     accent: "#ff6b35",
-    suite: "Agent Workflow + Guardrail Systems",
     url: "https://github.com/dcassil/straight-jacket",
-  },
-  {
-    id: "governance-meeting-intelligence",
-    title: "Governance Meeting Intelligence Platform",
-    period: "2026",
-    status: "Working system",
-    category: "Workflow Automation · AI Intelligence",
-    description:
-      "A meeting workflow system that turns recorded governance sessions into structured, usable outcomes. It captures and transcribes meetings, uses AI to identify decisions, action items, owners, deadlines, risks, and key discussion themes, then organizes the results into reviewable minutes and a searchable institutional record.",
-    tags: ["AI", "Transcription", "Governance", "Workflow Automation"],
-    metrics: [
-      { label: "Product form", value: "AI workflow platform" },
-      { label: "Audience", value: "Governance councils" },
-      { label: "Outcome", value: "Turns discussion into decisions and actions" },
-    ],
-    accent: "#22c55e",
   },
   {
     id: "knack-live-builder",
@@ -507,6 +376,22 @@ const PRODUCT_WORK: ProductWork[] = [
     accent: "#a855f7",
   },
   {
+    id: "governance-meeting-intelligence",
+    title: "Governance Meeting Intelligence Platform",
+    period: "2026",
+    status: "Working system",
+    category: "Workflow Automation · AI Intelligence",
+    description:
+      "A meeting workflow system that turns recorded governance sessions into structured, usable outcomes. It captures and transcribes meetings, uses AI to identify decisions, action items, owners, deadlines, risks, and key discussion themes, then organizes the results into reviewable minutes and a searchable institutional record.",
+    tags: ["AI", "Transcription", "Governance", "Workflow Automation"],
+    metrics: [
+      { label: "Product form", value: "AI workflow platform" },
+      { label: "Audience", value: "Governance councils" },
+      { label: "Outcome", value: "Turns discussion into decisions and actions" },
+    ],
+    accent: "#22c55e",
+  },
+  {
     id: "frame-link-stardust",
     title: "Frame Link → Stardust Iframe Adapter",
     period: "2021",
@@ -521,22 +406,6 @@ const PRODUCT_WORK: ProductWork[] = [
       { label: "Outcome", value: "Enables safe live-site editing" },
     ],
     accent: "#c8f500",
-  },
-  {
-    id: "ladder-demo",
-    title: "Clinical Ladder Workflow",
-    period: "2026",
-    status: "Product concept",
-    category: "Domain Modeling · Product Sense",
-    description:
-      "A focused full-stack workflow for clinical ladder submissions: nurse intent, evidence capture, requirement matching, portfolio review, and reviewer decision. It is a constrained product slice, useful because it turns an ambiguous domain into a coherent end-to-end system.",
-    tags: ["Healthcare Workflow", "Supabase", "Forms", "Review Queue"],
-    metrics: [
-      { label: "Product form", value: "Healthcare workflow SaaS" },
-      { label: "Audience", value: "Nurses and clinical reviewers" },
-      { label: "Outcome", value: "Clarifies advancement and review decisions" },
-    ],
-    accent: "#22c55e",
   },
 ];
 
@@ -588,6 +457,21 @@ const EXPERIENCE_WORK = [
     ],
     tags: ["React", "CMS", "eCommerce", "Engineering Leadership", "R&D"],
   },
+  {
+    company: "Swish",
+    role: "Founder / Product Engineer",
+    period: "2010 - 2013",
+    location: "Oklahoma City Metropolitan Area",
+    summary:
+      "Early product and client work across web, interface design, frontend implementation, and content-driven systems. This is where the career arc started: close to users, close to design, and responsible for making the product actually work.",
+    highlights: [
+      "Designed and built user-facing websites and product experiences from concept through delivery.",
+      "Worked directly with clients and stakeholders to translate needs, constraints, and rough ideas into usable software.",
+      "Built the foundation for a user-first engineering style: understand the problem, make the interface clear, and keep the implementation practical.",
+      "Established the product/design/engineering overlap that carried into enterprise SaaS, application builders, and AI-assisted engineering systems.",
+    ],
+    tags: ["Product Design", "Frontend", "Client Delivery", "UX", "Web Systems"],
+  },
 ];
 
 const CAREER_QUOTES = [
@@ -629,7 +513,11 @@ const ARCH_DOC = `# Architecture As An Enforced System
 
 ## Overview
 
-I am a user first, an engineer second, and a designer 3rd.  Wether I am writing code, designing a database, or planning a product, I always start by looking at it from a users perspective.  What does the user need, what do they feel, what is important and not to them.  I love beautiful systems and code, I also love efficency and building what is needed, in a way that allows us to pivot and expand, without fixiating on perfect, when 90% of perfect in 50% of the time is probably the sweet spot.  I love/hate AI.  I love that I can write 20k lines of near perfect code in  day, I hate that I do not write code so much as plan/design, and carry a big stick to keep AI inline.  Lately that has been my passion, building the tools and workflows to ensure that AI writes perfect code all the time.
+I think architecture should make good decisions easier to preserve.
+
+That means clear boundaries, small understandable systems, typed contracts, tests, schemas, and gates that keep important decisions alive after the original conversation is over. I want enough structure to support change without turning the architecture itself into the thing slowing the product down.
+
+That matters even more with AI. AI can produce a tremendous amount of code quickly, but speed magnifies both good and bad decisions. My recent focus has been building deterministic guardrails and workflows that let humans and AI move fast without allowing the system to quietly lose its shape.
 
 ---
 
@@ -643,6 +531,17 @@ I care about beautiful systems, clean code, and efficient execution, but I do no
 
 **Make AI work inside guardrails**
 AI can produce an enormous amount of useful code quickly, but it needs strong planning, clear design, and firm enforcement. My recent focus is building the tools, workflows, and validation gates that keep AI-generated work aligned with the product, the architecture, and the user's needs.
+
+---
+
+## How I Evaluate Architecture
+
+- Can a new contributor understand the system without relying on tribal knowledge?
+- Are critical decisions enforced by code, tests, schemas, or gates—not convention?
+- Does the architecture make the product easier to change, not just easier to diagram?
+- Can the system absorb rapid human and AI-driven change without losing its shape?
+- Does the design make the right path easier than the wrong one?
+- Can architectural drift be caught early, before it becomes a rewrite?
 
 ---
 
@@ -664,13 +563,13 @@ Foundational CMS/eCommerce architecture for draft/live states, scheduled release
 
 ## Architecture Notes
 
-### ADR-001: Keep visual editing transport separate from product behavior
+### ADR-001: Design from the user's real workflow
 
-**Context:** Iframe editing can quickly become a knot of postMessage calls, UI state, persistence, and product-specific assumptions.
+**Context:** Builder tools often optimize for the system model instead of the user's mental model. That creates technically clean software that still feels indirect, fragile, or detached from the thing the user is actually trying to change.
 
-**Decision:** Keep Frame Link as the transport primitive and build the Stardust adapter on top of it.
+**Decision:** Put the user's live experience at the center. For visual editing, that means working against the real page, preserving context, making change targets obvious, and keeping the underlying transport boring enough that the product experience stays the focus.
 
-**Consequence:** The transport can stand alone as a small package while the adapter owns visual-editing concerns.
+**Consequence:** The architecture supports the workflow instead of showing off around it. Technical boundaries still matter, but they exist to make the product easier to use, easier to change, and easier to trust.
 
 ---
 
@@ -694,37 +593,22 @@ Foundational CMS/eCommerce architecture for draft/live states, scheduled release
 
 ---
 
-## ShoreWorks — Architecture & Ideology
+## Architecture Across The Career Arc
 
-\`Live at casspear.com\`
+**Swish / early product work**
+The early work was close to users, clients, and the actual product surface: websites, interfaces, content flows, and the practical tradeoffs that happen when design intent meets implementation. That period shaped the habit of treating architecture as a way to make the user's path clearer, not just the codebase cleaner.
 
-ShoreWorks is where the guardrail philosophy becomes a product. The premise: teams now ship software faster than they can understand it — especially with AI writing large portions of the code. Speed without a health signal is how a codebase quietly rots. ShoreWorks makes that signal continuous and legible to people who don't read diffs.
+**NetSuite / Oracle NetSuite**
+Eight years inside enterprise eCommerce and CMS systems made the cost of architectural drift concrete. Draft/live content models, scheduled releases, rollback paths, platform extensibility, UI modernization, and team leadership all required systems that could survive long product cycles, multiple teams, and changing business priorities.
 
-**Product / runner split**
-The system is deliberately two pieces. Shore Code owns everything stateful and user-facing — GitHub App integration, auth, teams, scan ingest, dashboards, and Supabase-backed history. Shore Runner is a stateless worker that leases a scan, runs static-analysis toolchains against a checkout, aggregates metrics, posts results back, and forgets the source. That boundary is a security decision as much as an architectural one: untrusted repositories never touch the product tier, and customer code is never retained or used for training.
+**Knack**
+Modernizing an application-building platform meant balancing current user behavior with future technical direction. The useful architecture question was not "which framework wins," but how to move from older Vue and Backbone patterns toward React without breaking the product model, the builder experience, or the team's ability to ship.
 
-**Signals become business language**
-Raw engineering metrics — complexity, coupling, cycles, coverage, churn — mean nothing to a founder. The product's job is translation: it maps those signals onto development cost, delivery speed, bug risk, security exposure, and maintainability, then quantifies them. A healthy codebase might score 92% health against a fragile one's 65%, with a 2.5× cost difference on the same feature. Trend history turns a single score into a direction.
+**Hiveginx**
+Founding-team product work across medical, banking, and bidding-platform use cases pushed architecture into platform territory: multi-tenant data models, shared identity and qualification workflows, reporting, onboarding builders, and enough cloud flexibility to move from AWS toward Azure as the company evolved.
 
-### The agentic guard concept
-
-The idea that ties ShoreWorks to Katana and Dev Genie: **an AI agent should operate inside enforced guards, not inside good intentions.**
-
-A prompt that says "keep the architecture clean" is advisory — an agent can ignore or slowly dilute it, and usually does. A guard is executable: dependency-boundary rules, complexity ceilings, cycle checks, typed contracts, and test gates that *fail the change* instead of trusting it. ShoreWorks turns those same guards outward — it measures whether a codebase, however it was written and by whoever or whatever, is drifting past its thresholds, and surfaces the drift before it compounds.
-
-The through-line: the environment enforces the architecture. Humans and agents both produce better systems when the boundary is a wall they hit, not a sentence they remember.
-
----
-
-### ADR-004: Make the agent's environment the enforcement layer
-
-**Context:** AI-assisted development scales output but not judgment. Guidance embedded only in prompts erodes as context grows and agents optimize for the immediate task.
-
-**Decision:** Encode architecture as guards in the environment — static analysis, dependency rules, complexity limits, typed contracts, CI gates — and let both humans and agents work against them. ShoreWorks extends this outward by continuously scoring real repositories against health thresholds.
-
-**Alternatives considered:** Prompt-only guidance (rejected — not enforceable, silently decays); human review as the sole gate (rejected — doesn't scale to agent-speed output, and stays inconsistent between reviewers).
-
-**Consequence:** Architecture stays intact under high-velocity, AI-assisted change, at the cost of up-front investment in guard tooling and some friction on legitimate exceptions.
+**ShoreWorks / AI guardrails**
+The current work turns those lessons into enforcement. ShoreWorks, Katana, Dev Genie, Agent Kit, and Straight Jacket all come from the same belief: fast-moving teams and AI agents need clear boundaries, executable checks, and workflows that catch drift before the system has to be rewritten.
 
 ## Evidence
 
@@ -733,13 +617,6 @@ The through-line: the environment enforces the architecture. Humans and agents b
 - Shore Runner: passing build and 130/130 tests.
 - Katana: passing build and 299/299 tests across the reviewed copy.
 - Dev Genie: build/typecheck/lint green with protocol, role, and engine coverage.
-
-## How I Evaluate Architecture
-
-- Can a new contributor explain the system boundaries without oral tradition?
-- Are the highest-risk decisions captured in code, tests, gates, or schemas?
-- Does the architecture improve product iteration speed, or only look tidy?
-- Can the system absorb AI-assisted change without losing shape?
 `;
 
 // ─── Markdown Renderer ───────────────────────────────────────────────────────
@@ -991,13 +868,19 @@ function HomePage({ navigate }: { navigate: (s: Section) => void }) {
                 <span className="block text-primary">Products built to last.</span>
               </h1>
               <p className="mt-6 text-base text-muted-foreground leading-relaxed break-words">
-                I build software products, platforms, and developer systems from early ideas through production.
-                My role goes beyond implementation: I shape the idea, define the product, design the system,
-                solve the hard problems, and lead it through delivery. I work across disciplines — bringing
-                stakeholders, product, design, engineering, and QA into alignment around a clear vision and a
-                cohesive solution. My work spans enterprise SaaS, real-time systems, workflow automation,
-                architectural guardrails, and tools that improve the quality of both human- and AI-driven
-                development.
+                I am a user first, an engineer second, and a designer third. Whether I am building a product,
+                designing a system, or writing code, I start with the same questions: what does the user need,
+                what matters to them, and what is the simplest durable way to solve it?
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                I care about beautiful systems and clean code, but I care just as much about speed, flexibility,
+                and building what is actually needed. I would rather get to 90% of perfect in half the time,
+                with enough structure to keep evolving, than overbuild for a future that may never come.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                Most recently, that has pulled me deep into AI-assisted engineering: using AI to move faster
+                while building the tools, workflows, and guardrails that keep the product and architecture
+                from drifting.
               </p>
             </div>
           </div>
@@ -1057,7 +940,7 @@ function ProductPage() {
       <PageHeader
         eyebrow="Selected Work"
         title="Product"
-        description="Product-first work spanning strategy, experience, systems, and delivery — built around real user needs and carried through production."
+        description="Five product stories that show the range: founder-facing SaaS, AI guardrails, live-app editing, workflow intelligence, and reusable protocol design."
       />
 
       <div className="flex flex-col divide-y divide-border">
@@ -1101,7 +984,7 @@ function ProductPage() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
                       >
-                        View live <ArrowRight size={12} />
+                        View project <ArrowRight size={12} />
                       </a>
                     )}
                   </div>
@@ -1133,7 +1016,7 @@ function CodePage() {
       <PageHeader
         eyebrow="Open Source"
         title="Code"
-        description="A closer look at how I design and build software: public libraries, private product systems, and the architectural patterns behind them. The work spans typed protocols, visual tooling, code health, agent workflows, and systems designed to remain clear, testable, and dependable as they grow."
+        description="A focused set of repositories: three featured projects that support the architecture thesis, with supporting libraries beneath them to show the systems thinking predates AI."
       />
 
       <div className="space-y-9">
@@ -1201,8 +1084,8 @@ function ExperiencePage() {
     <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
       <PageHeader
         eyebrow="Experience"
-        title="Companies"
-        description="Selected work across AI/ML products, application-building platforms, enterprise SaaS, eCommerce, and content systems — spanning product development, platform architecture, technical strategy, and engineering leadership."
+        title="15+ Year Career Arc"
+        description="From early product/design/frontend work at Swish through NetSuite, Knack, Hiveginx, and current AI-assisted engineering tools: a career spent turning user needs into durable products, platforms, and architecture."
       />
 
       <div className="flex flex-col divide-y divide-border">
@@ -1347,7 +1230,7 @@ const NAV_ITEMS: { id: Section; label: string; icon: React.ReactNode }[] = [
   { id: "code", label: "Code", icon: <Terminal size={13} /> },
   { id: "experience", label: "Experience", icon: <Briefcase size={13} /> },
   { id: "architecture", label: "Architecture", icon: <Cpu size={13} /> },
-  { id: "career", label: "Career", icon: <Box size={13} /> },
+  { id: "career", label: "Working With Me", icon: <Box size={13} /> },
 ];
 
 function Sidebar({
