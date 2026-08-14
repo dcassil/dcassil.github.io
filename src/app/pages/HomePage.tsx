@@ -24,19 +24,62 @@ export function HomePage({ navigate }: { navigate: (s: Section) => void }) {
                 <span className="block text-primary">Products built to last.</span>
               </h1>
               <p className="mt-6 text-base text-muted-foreground leading-relaxed break-words">
-                I am a user first, an engineer second, and a designer third. Whether I am building a product,
-                designing a system, or writing code, I start with the same questions: what does the user need,
-                what matters to them, and what is the simplest durable way to solve it?
+                It’s all about the user. That seemingly obvious but often ignored truth shapes how I approach every
+                solution. Whether I am creating a product vision, defining architecture, designing a database schema,
+                or simply writing code, I keep the same questions ever present: what does the user need, what are they
+                trying to accomplish, what context are they working in, what might they not know to ask for yet, and how
+                do I want the experience to make them feel?
               </p>
               <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
-                I care about beautiful systems and clean code, but I care just as much about speed, flexibility,
-                and building what is actually needed. I would rather get to 90% of perfect in half the time,
-                with enough structure to keep evolving, than overbuild for a future that may never come.
+                I am a full-stack developer who builds complex, UX-heavy products from the interface through the API,
+                data model, and infrastructure behind it. I think in systems, not slices. Over 15 years across frontend,
+                backend, databases, architecture, infrastructure, product, UX, and engineering leadership, I have learned
+                to see how a decision in one part of a product affects everything around it. I enjoy taking complicated
+                problems, evaluating them from several angles, exposing the tradeoffs, and turning them into solutions
+                that make sense for the user, the business, and the people who have to build and maintain them.
               </p>
               <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
-                Most recently, that has pulled me deep into AI-assisted engineering: using AI to move faster
-                while building the tools, workflows, and guardrails that keep the product and architecture
-                from drifting.
+                That also means I am comfortable stepping outside the traditional developer role when the work needs it.
+                I can move into product discovery, work directly with users and stakeholders, shape requirements, develop
+                wireframes and flows, evaluate competing approaches, and help define the product vision. I am equally
+                comfortable driving delivery, clearing roadblocks, resolving ambiguity, coordinating teams, making
+                decisions, and keeping complex projects moving efficiently toward something that ships. I have done that
+                from several seats, including Co-Founder, Sole Engineer, Engineering Manager, Team Lead, Interim Product
+                Manager, and, when needed, Project Manager.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                A big part of that work is communication and alignment. Product, design, engineering, and leadership each
+                have their own language and perspective, which shapes how they see, understand, and communicate about the
+                product. I am multilingual in that sense, strongest in product and leadership, followed by engineering
+                and then design. That range has consistently allowed me to translate between groups, bridge gaps in
+                understanding, and drive clarity, cohesion, and alignment around a shared vision. I have led and worked
+                with teams across more than a dozen countries and multiple industries.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                This way of thinking started long before software. I was the kid who took things apart to understand
+                them, sent invention ideas to DARPA, Fox, and other companies, and at seven genuinely thought I had solved
+                infinite clean energy with mirrors, LEDs, solar panels, and hot glue. The second law of thermodynamics
+                eventually won, but the instinct stuck: understand how something works, imagine how it could work better,
+                and then try to build it.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                More recently, much of my focus has been on AI-assisted engineering and what happens when software output
+                accelerates faster than our ability to review and control it. I have been building tools, workflows, and
+                deterministic guardrails that move architecture, style guides, and engineering standards out of documents
+                and into the development environment itself: static analysis, dependency boundaries, pre-commit validation,
+                build checks, CI gates, and fast feedback when something drifts. The best guardrails do more than reject
+                a bad change; they explain what failed immediately, while the decision is still fresh and easy to correct.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                AI can produce an extraordinary amount of code very quickly. I want to keep that speed while preserving
+                the judgment, structure, and discipline that make software maintainable. The goal is to create an
+                environment where AI has no choice but to produce excellent, well-architected code, validated not by its
+                own reasoning or promises, but by immutable deterministic systems it cannot bypass.
+              </p>
+              <p className="mt-4 text-base text-muted-foreground leading-relaxed break-words">
+                The common thread through all of this is simple: understand the user, understand the whole system required
+                to serve them, bring the people responsible for it into alignment, and turn complex problems into clear
+                solutions that actually get built.
               </p>
             </div>
           </div>
