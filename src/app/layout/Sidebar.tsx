@@ -75,7 +75,7 @@ export function Sidebar({
               key={item.id}
               label={item.label}
               icon={item.icon}
-              active={section === item.id}
+              active={section === item.id || section.startsWith(`${item.id}/`)}
               onClick={() => { handleNav(item.id); }}
             />
           ))}

@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { PageHeader } from "../components/shared/PageHeader";
 import { Tag } from "../components/shared/Tag";
 import { PRODUCT_SUITE_DESCRIPTIONS, PRODUCT_WORK } from "../data/product-work";
+import type { Section } from "../types";
 
 function DescriptionText({ text, className }: { text: string; className: string }) {
   return (
@@ -16,7 +17,7 @@ function DescriptionText({ text, className }: { text: string; className: string 
   );
 }
 
-export function ProductPage() {
+export function ProductPage({ navigate }: { navigate: (s: Section) => void }) {
   return (
     <div className="px-5 sm:px-8 lg:px-10 py-10 sm:py-12">
       <PageHeader
@@ -24,6 +25,16 @@ export function ProductPage() {
         title="Product"
         description="Five product stories that show the range: founder-facing SaaS, AI guardrails, live-app editing, workflow intelligence, and reusable protocol design."
       />
+
+      <div className="mb-10 border-y border-border py-5">
+        <button
+          type="button"
+          onClick={() => { navigate("product/component-lib/demo"); }}
+          className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
+        >
+          View component library demo <ArrowRight size={12} />
+        </button>
+      </div>
 
       <div className="flex flex-col divide-y divide-border">
         {PRODUCT_WORK.map((work, index) => {

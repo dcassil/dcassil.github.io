@@ -1,0 +1,1 @@
+import{j as c}from"./index-DW36zwiR.js";import{S as o}from"./index-DN4JzdW2.js";const e=({className:s,...n})=>{const p=["cl-select",s].filter(Boolean).join(" ");return c.jsx(o,{className:p,...n})},t=e;t.Option=o.Option;t.OptGroup=o.OptGroup;e.__docgenInfo={description:"",methods:[],displayName:"SelectComponent"};export{t as S};

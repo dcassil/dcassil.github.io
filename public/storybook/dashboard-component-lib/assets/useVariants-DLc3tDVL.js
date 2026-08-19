@@ -1,0 +1,1 @@
+import{r as n}from"./index-3dRrDZpt.js";import{C as c,V as l}from"./index-D_r6Hzab.js";import{V as u}from"./ContextIsolator-DDVSnbXG.js";const d=(r,a,o)=>{const{variant:s,[r]:e}=n.useContext(c),i=n.useContext(u),f=e==null?void 0:e.variant;let t;typeof a<"u"?t=a:o===!1?t="borderless":t=i??f??s??"outlined";const V=l.includes(t);return[t,V]};export{d as u};

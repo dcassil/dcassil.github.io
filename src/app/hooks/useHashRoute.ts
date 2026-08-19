@@ -4,7 +4,14 @@ import type { Section } from "../types";
 export function useHashRoute(): [Section, (s: Section) => void] {
   const getSection = (): Section => {
     const hash = window.location.hash.replace("#/", "").replace("#", "") as Section;
-    const valid: Section[] = ["product", "code", "experience", "architecture", "career"];
+    const valid: Section[] = [
+      "product",
+      "product/component-lib/demo",
+      "code",
+      "experience",
+      "architecture",
+      "career",
+    ];
     return valid.includes(hash) ? hash : "home";
   };
   const [section, setSection] = useState<Section>(getSection);

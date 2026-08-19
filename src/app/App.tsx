@@ -7,6 +7,7 @@ import { ThemeControls } from "./layout/ThemeControls";
 import { Sidebar } from "./layout/Sidebar";
 import { HomePage } from "./pages/HomePage";
 import { ProductPage } from "./pages/ProductPage";
+import { ComponentLibDemoPage } from "./pages/ComponentLibDemoPage";
 import { CodePage } from "./pages/CodePage";
 import { ExperiencePage } from "./pages/ExperiencePage";
 import { ArchitecturePage } from "./pages/ArchitecturePage";
@@ -15,7 +16,8 @@ import type { Section } from "./types";
 
 function renderPage(section: Section, navigate: (s: Section) => void) {
   switch (section) {
-    case "product": return <ProductPage />;
+    case "product": return <ProductPage navigate={navigate} />;
+    case "product/component-lib/demo": return <ComponentLibDemoPage />;
     case "code": return <CodePage />;
     case "experience": return <ExperiencePage />;
     case "architecture": return <ArchitecturePage />;
@@ -49,7 +51,11 @@ export default function App() {
               <Menu size={16} />
             </button>
             <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase">
-              {section === "home" ? "Overview" : section}
+              {section === "home"
+                ? "Overview"
+                : section === "product/component-lib/demo"
+                  ? "Product / Component Library"
+                  : section}
             </span>
           </div>
 

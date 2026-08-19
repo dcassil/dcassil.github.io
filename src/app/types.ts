@@ -1,6 +1,13 @@
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type Section = "home" | "product" | "code" | "experience" | "architecture" | "career";
+export type Section =
+  | "home"
+  | "product"
+  | "product/component-lib/demo"
+  | "code"
+  | "experience"
+  | "architecture"
+  | "career";
 export type ThemeMode = "light" | "dark";
 
 export interface ThemeColors {

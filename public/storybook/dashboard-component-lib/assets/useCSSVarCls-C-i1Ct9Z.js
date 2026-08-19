@@ -1,0 +1,1 @@
+import{r as a}from"./index-3dRrDZpt.js";import{u}from"./index-D_r6Hzab.js";function i(t,e){const[s,r]=a.useState(t),n=e!==void 0?e:s;return u(o=>{o||r(e)},[e]),[n,r]}const m=t=>`${t}-css-var`;export{m as a,i as u};
