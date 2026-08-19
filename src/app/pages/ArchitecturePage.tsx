@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { SectionLabel } from "../components/shared/SectionLabel";
 
 const NAV_ITEMS = [
@@ -365,16 +366,39 @@ function Paragraphs({ text, className }: { text: string; className: string }) {
 }
 
 export function ArchitecturePage() {
+  const [activeId, setActiveId] = useState("arch-overview");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) {
+          setActiveId(visible.target.id);
+        }
+      },
+      { rootMargin: "-10% 0px -80% 0px" },
+    );
+    for (const item of NAV_ITEMS) {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    }
+    return () => { observer.disconnect(); };
+  }, []);
+
   return (
     <div>
       {/* Sticky section navigation */}
       <nav className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border px-5 sm:px-8 lg:px-10">
-        <div className="flex gap-4 overflow-x-auto py-2.5" style={{ scrollbarWidth: "none" }}>
+        <div className="flex gap-1 overflow-x-auto py-1.5" style={{ scrollbarWidth: "none" }}>
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
               onClick={() => { scrollToSection(item.id); }}
-              className="font-mono text-[10px] text-muted-foreground hover:text-foreground tracking-widest uppercase whitespace-nowrap transition-colors"
+              className={`font-mono text-[10px] tracking-widest uppercase whitespace-nowrap transition-colors cursor-pointer px-2 py-1 ${
+                activeId === item.id
+                  ? "text-primary bg-muted"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+              }`}
             >
               {item.label}
             </button>
@@ -409,11 +433,8 @@ export function ArchitecturePage() {
         <section id="arch-values" className="scroll-mt-16">
           <SectionHeading>What I Value</SectionHeading>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {VALUES.map((value, i) => (
-              <div
-                key={value.title}
-                className={`bg-card border border-border p-5 ${i % 3 === 1 ? "lg:mt-4" : ""}`}
-              >
+            {VALUES.map((value) => (
+              <div key={value.title} className="bg-card border border-border p-5">
                 <h4 className="text-sm font-semibold text-foreground mb-2">{value.title}</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed">{value.body}</p>
               </div>
@@ -722,34 +743,27 @@ export function ArchitecturePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6 lg:gap-12">
-              <div className="max-w-3xl">
-                <h4 className="text-sm font-semibold text-foreground mb-1.5">ADRs</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  I like ADRs for decisions where another competent engineer could reasonably have
-                  chosen something different.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                  My normal structure is:
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                  That last one matters. Architecture decisions are made with the information
-                  available at the time. I do not need every decision to remain correct forever.
-                </p>
+            <div className="max-w-3xl">
+              <h4 className="text-sm font-semibold text-foreground mb-1.5">ADRs</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                I like ADRs for decisions where another competent engineer could reasonably have
+                chosen something different.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                My normal structure is:
+              </p>
+              <div className="mt-4 space-y-3 border-l-2 border-primary/40 pl-4">
+                {ADR_STRUCTURE.map((entry) => (
+                  <div key={entry.label}>
+                    <p className="font-mono text-xs font-semibold text-foreground">{entry.label}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-0.5">{entry.body}</p>
+                  </div>
+                ))}
               </div>
-              <div className="bg-card border border-border p-5 self-start">
-                <p className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase mb-4">
-                  ADR structure
-                </p>
-                <div className="space-y-3">
-                  {ADR_STRUCTURE.map((entry) => (
-                    <div key={entry.label}>
-                      <p className="font-mono text-xs font-semibold text-foreground">{entry.label}</p>
-                      <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{entry.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed mt-4">
+                That last one matters. Architecture decisions are made with the information
+                available at the time. I do not need every decision to remain correct forever.
+              </p>
             </div>
 
             <div className="max-w-3xl">
