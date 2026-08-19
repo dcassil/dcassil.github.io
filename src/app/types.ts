@@ -50,6 +50,8 @@ export interface ProductWork {
   accent: string;
   suite?: string;
   url?: string;
+  ctaLabel?: string;
+  demoRoute?: Section;
 }
 
 export interface ExperienceItem {

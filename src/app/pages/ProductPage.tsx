@@ -23,22 +23,13 @@ export function ProductPage({ navigate }: { navigate: (s: Section) => void }) {
       <PageHeader
         eyebrow="Selected Work"
         title="Product"
-        description="Five product stories that show the range: founder-facing SaaS, AI guardrails, live-app editing, workflow intelligence, and reusable protocol design."
+        description="Six product stories that show the range: founder-facing SaaS, reusable UI systems, AI guardrails, live-app editing, workflow intelligence, and protocol design."
       />
-
-      <div className="mb-10 border-y border-border py-5">
-        <button
-          type="button"
-          onClick={() => { navigate("product/component-lib/demo"); }}
-          className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
-        >
-          View component library demo <ArrowRight size={12} />
-        </button>
-      </div>
 
       <div className="flex flex-col divide-y divide-border">
         {PRODUCT_WORK.map((work, index) => {
           const showSuite = Boolean(work.suite && work.suite !== PRODUCT_WORK[index - 1]?.suite);
+          const demoRoute = work.demoRoute;
 
           return (
             <Fragment key={work.id}>
@@ -72,6 +63,15 @@ export function ProductPage({ navigate }: { navigate: (s: Section) => void }) {
                     <div className="flex flex-wrap gap-2 mb-6">
                       {work.tags.slice(0, 3).map((t) => <Tag key={t}>{t}</Tag>)}
                     </div>
+                    {demoRoute && (
+                      <button
+                        type="button"
+                        onClick={() => { navigate(demoRoute); }}
+                        className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
+                      >
+                        {work.ctaLabel ?? "View demo"} <ArrowRight size={12} />
+                      </button>
+                    )}
                     {work.url && (
                       <a
                         href={work.url}
@@ -79,7 +79,7 @@ export function ProductPage({ navigate }: { navigate: (s: Section) => void }) {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 font-mono text-xs tracking-wider uppercase text-primary hover:gap-3 transition-all duration-200"
                       >
-                        View project <ArrowRight size={12} />
+                        {work.ctaLabel ?? "View project"} <ArrowRight size={12} />
                       </a>
                     )}
                   </div>

@@ -26,6 +26,24 @@ export const PRODUCT_WORK: ProductWork[] = [
     url: "https://www.casspear.com/",
   },
   {
+    id: "dashboard-component-lib",
+    title: "Dashboard Component Library",
+    period: "2026",
+    status: "Interactive demo",
+    category: "Design Systems · Frontend Architecture",
+    description:
+      "A reusable dashboard component system for dense operational interfaces. The library turns common SaaS patterns like filters, forms, tables, stats, empty states, and page structure into consistent primitives that can be tested, themed, and composed across product surfaces.",
+    tags: ["React", "Storybook", "Design Systems", "Dashboard UI"],
+    metrics: [
+      { label: "Product form", value: "Reusable component library" },
+      { label: "Audience", value: "Product engineering teams" },
+      { label: "Outcome", value: "Makes dashboard UI consistent" },
+    ],
+    accent: "#14b8a6",
+    ctaLabel: "View Demo",
+    demoRoute: "product/component-lib/demo",
+  },
+  {
     id: "straight-jacket",
     title: "Straight Jacket",
     period: "2026",
