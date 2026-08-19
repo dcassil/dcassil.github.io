@@ -34,6 +34,24 @@ export const CODE_REPOS: CodeRepo[] = [
     url: "https://github.com/dcassil/ci-health-audit",
   },
   {
+    id: "code-audit",
+    title: "Code Audit",
+    description:
+      "Multi-language code audit system with a scanning pipeline, scoring engine, and visualization dashboard. Built as a server-as-orchestrator monorepo: a Fastify API with SQLite and a job queue, a runner daemon that executes scans, a web dashboard, a CLI, and an MCP server for AI tool integration — with shared scanning and scoring packages underneath.",
+    tags: ["TypeScript", "Static Analysis", "Dashboard", "MCP"],
+    family: "Featured code",
+    url: "https://github.com/dcassil/code-audit",
+  },
+  {
+    id: "colab",
+    title: "colab",
+    description:
+      "Universal, drop-in real-time collaboration and presence for any web app. A small monorepo with a framework-free collaboration core (plus a React binding), a Socket.IO relay server, and a shared wire protocol — versioned in lockstep so client, server, and protocol can't skew in a published install.",
+    tags: ["TypeScript", "Real-time", "Presence", "Socket.IO"],
+    family: "Featured code",
+    url: "https://github.com/dcassil/colab",
+  },
+  {
     id: "versioned-content-engine",
     title: "versioned-content-engine",
     description:
@@ -48,7 +66,7 @@ export const CODE_REPOS: CodeRepo[] = [
     description:
       "Client-side transactional change management: sequence edits, undo/redo, edge deduplication, superimpose changes onto a dataset, and flush as batched saves. Published to npm as sequence-transactor.",
     tags: ["TypeScript", "Undo/Redo", "State", "npm"],
-    family: "Supporting repos",
+    family: "Featured code",
     url: "https://github.com/dcassil/transactor",
   },
 ];
