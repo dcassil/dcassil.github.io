@@ -8,7 +8,7 @@ export function ExperiencePage() {
       <PageHeader
         eyebrow="Experience"
         title="15+ Year Career Arc"
-        description="From early product/design/frontend work at Swish through NetSuite, Knack, Hiveginx, and current AI-assisted engineering tools: a career spent turning user needs into durable products, platforms, and architecture."
+        description="From early IT and CMS work through NetSuite and Oracle, Knack, Swish Analytics, and co-founding Hiveginx: a career spent turning user needs into durable products, platforms, and architecture."
       />
 
       <div className="flex flex-col divide-y divide-border">
@@ -25,27 +25,35 @@ export function ExperiencePage() {
                 <p className="font-mono text-xs text-muted-foreground tracking-widest uppercase mt-3">
                   {item.role}
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {item.location}
-                </p>
+                {item.location && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {item.location}
+                  </p>
+                )}
               </div>
               <div className="min-w-0">
-                <p className="text-sm text-foreground leading-relaxed max-w-3xl">
-                  {item.summary}
-                </p>
-                <ul className="mt-5 space-y-2">
-                  {item.highlights.map((highlight) => (
-                    <li key={highlight} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
-                      <span className="text-primary mt-0.5 flex-shrink-0">—</span>
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-2 mt-6">
-                  {item.tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
-                  ))}
-                </div>
+                {item.summary && (
+                  <p className="text-sm text-foreground leading-relaxed max-w-3xl">
+                    {item.summary}
+                  </p>
+                )}
+                {item.highlights.length > 0 && (
+                  <ul className="mt-5 space-y-2">
+                    {item.highlights.map((highlight) => (
+                      <li key={highlight} className="flex gap-3 text-sm text-muted-foreground leading-relaxed">
+                        <span className="text-primary mt-0.5 flex-shrink-0">—</span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {item.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-6">
+                    {item.tags.map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </article>
