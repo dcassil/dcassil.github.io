@@ -45,21 +45,9 @@ export const EXPERIENCE_WORK: ExperienceItem[] = [
     tags: ["Software Architecture", "React.js"],
   },
   {
-    company: "Lower",
-    role: "Full Stack Engineer",
-    period: "Jun 2022 - Mar 2023",
-    location: "Remote",
-    summary:
-      "Prototyped and built a customer and partner dashboard with automation flows to streamline mortgage application and management.",
-    highlights: [
-      "Led the framework evaluation that selected Blazor on the company's existing C# stack, and delivered production-ready applications on an accelerated timeline.",
-    ],
-    tags: ["C#", "TypeScript"],
-  },
-  {
     company: "SpotOn",
     role: "Full Stack Engineer",
-    period: "Apr 2021 - Jun 2022",
+    period: "Apr 2021 - Feb 2023",
     location: "",
     summary:
       "Cut Largest Contentful Paint by 75% through server-side rendering and dependency optimization, measured against Lighthouse.",
